@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+.ng-pristine:not(form) {
+    border-right: 5px solid #ff8d1e;
+  }
+  
+.ng-touched .ng-invalid:not(form) {
+    border-right: 5px solid #a94442;
+}
+
+.ng-touched .ng-valid:not(form) {
+  border-right: 5px solid #4ea942;
+}
