@@ -1,12 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken'); //Modulo de token
 
 /* Conexión con BD*/
 var dbpool = require('../database');
 
+//Función para verificación del token creado en login.
+function verifyToken(req, res, next){
+  if(!req.headers.authorization){
+    return res.status(401).send({
+      token: null
+    });
+  }
+
+  const token = req.headers.authorization.split(' ')[1];
+    if (token == 'null'){
+       //No autorizado para seguir
+      return res.status(401).send({
+        token: null
+      });
+    }
+
+    //Aqui se verifica el token y se saca la información que tiene (payload)
+    const payload = jwt.verify(token, 'secretkey')
+    req.userId = payload.id;
+    
+    next();
+    
+ }
+
+
+
 
  //Regresa todas la pedidos validas registradas
-router.get("/api/pedidos", async (req, res) => {
+router.get("/api/pedidos", verifyToken, async (req, res) => {
     var pedidos = null;
       try {
         dbpool.getConnection(function (err, connection) {
