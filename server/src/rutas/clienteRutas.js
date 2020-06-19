@@ -9,7 +9,7 @@ var dbpool = require('../database');
 
   //Regresa todos los clientes registrados
 
-   router.get("/api/clientes", async (req, res) => {
+router.get("/api/clientes", async (req, res) => {
     var clientes = null;
       try {
         let QueryReal = "SELECT * FROM clientefabrica";
@@ -52,6 +52,7 @@ router.post("/api/clientes/registro", async (req, res) => {
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
           if (err) {
+            console.log("Error: "+err);
               if (!rolledBack) {
                   transaction.rollback(err => {
                      if(err){
@@ -106,6 +107,7 @@ router.delete("/api/clientes/elimina/:idCliente", async (req, res) => {
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
           if (err) {
+            console.log("Error: "+err);
               if (!rolledBack) {
                   transaction.rollback(err => {
                      if(err){
@@ -162,6 +164,7 @@ router.put("/api/clientes/actualiza/:idCliente", async (req, res) => {
          new sql.Request(transaction).query(QueryReal, (err,datos) => {
              // insert should fail because of invalid value
              if (err) {
+              console.log("Error: "+err);
                  if (!rolledBack) {
                      transaction.rollback(err => {
                         if(err){
