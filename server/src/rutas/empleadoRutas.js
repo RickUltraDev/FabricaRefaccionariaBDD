@@ -15,21 +15,21 @@ var dbpool = require('../database');
  //Función para verificación del token creado en login.
  function verifyToken(req, res, next){
   if(!req.headers.authorization){
-    return res.status(401).send({
-      token: null
-    });
+    //return res.status(401).send({token: null});
+    return res.status(401).send('No autorizado');
   }
-
+ 
+  //Comprobar que se tenga el token, antes del token se usa la palabra Bearer
   const token = req.headers.authorization.split(' ')[1];
     if (token == 'null'){
        //No autorizado para seguir
-      return res.status(401).send({
-        token: null
-      });
+      //return res.status(401).send({token: null});
+      return res.status(401).send('No autorizado');
     }
 
     //Aqui se verifica el token y se saca la información que tiene (payload)
     const payload = jwt.verify(token, 'secretkey')
+    //En req se creará una propiedad que tenga el id del usr logueado
     req.userId = payload.id;
     next();
     
@@ -39,50 +39,72 @@ var dbpool = require('../database');
 
   //Login: Si coinciden el correo y contraseña crea la session
 router.post("/api/empleados/login", async (req, res) => {
-        var respEmpleado = null;
-       try {
-        dbpool.getConnection(function (err, connection) {
-          
-          let correo = req.body.correo;
-          let pass = req.body.contrasena;
-               
-          dbpool.query("CALL empleadoLogin(?,?)",[correo, pass], function (err, results) {
-            respEmpleado = results[0][0]; //En la posción del JSON
-            if (results[0].length == 1) {
-              //Guardar el valor que tenga el id del empleado en un token
-              //Idempleado, secret, tiempo de vida token
-              //let test = results[0];
-              
-              const token = jwt.sign({id:respEmpleado.idEmpleado}, 'secretkey', { expiresIn: '2h' });
-              
-             
-              //Un Json de token que contenga el token creado
-              res.status(200).send({
-                   token: token
-              });
-              
-            /// console.log("La sesion tiene en post: ",req.session);
-            } else {
+  let { correo, contrasena } = req.body;
+  const transaction = new sql.Transaction(dbpool)
+  let respEmpleado = null;
 
-               res.status(404).send({
-                token: null
-              });
-
-            }
-
-            //Cuando termine de hacer su tarea suelta la conexión
-            connection.release();
-          });
-        });
-       } catch (error) {
-        console.log(error);
-       }
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })
       
+      let QueryReal = "exec empleado_login '"+correo+"','"+contrasena+"';";
+      
+      new sql.Request(transaction).query(QueryReal, (err,datos) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  
+                  if (datos.recordsets[0].length == 1) {
+                    respEmpleado = datos.recordsets[0][0];
+                    const token = jwt.sign({id:respEmpleado.idEmpleado}, 'secretkey', { expiresIn: '2h' });               
+                    res.status(200).send({token: token});
+                  }else{
+                    res.status(404).send({token: null});
+                  }  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})   
 });
 
 //rutas de prueba
-
 router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
+  console.log('EMPLEADO CON TOKEN');
+  res.status(200).send({info:"la wea" });  
+});
+
+router.get("/api/empleados/perfil", verifyToken, async (req, res) => {
+  //Aqui se podría poner un select * from empleados que busque el id de la req.id y te regrese los datos de usuario
+  res.status(200).send({info: req.userId});  
   
 });
 
@@ -219,7 +241,7 @@ router.delete("/api/empleados/elimina/:idEmpleado", (req, res) => {
 
 //Actualiza los atributos que se quiera de un respEmpleado
 router.put("/api/empleados/actualiza/:idEmpleado", async (req, res) => {
-               //id a eliminar
+
     const { idEmpleado } =  req.params;
     let {nombre, apellido_paterno, apellido_materno, fecha_nacimiento, calle, numero,
       cp, telefono, cargo, salario, correo, contrasena, valido} = req.body;

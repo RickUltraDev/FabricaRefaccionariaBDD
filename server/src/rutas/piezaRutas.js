@@ -185,6 +185,60 @@ router.put("/api/piezas/actualiza/:idPieza", async (req, res) => {
             }})   
 });
 
+
+//Actualizar existencia de una pieza
+router.put("/api/piezas/actualiza/existencia/:idPieza", async (req, res) => {
+  //id a eliminar
+  const { idPieza } =  req.params;
+  let {existencia} = req.body;
+  const transaction = new sql.Transaction(dbpool)
+   
+   transaction.begin(err => {
+        if(err){
+         console.log("Error: "+err);
+         throw err;
+          //Failed
+        }else{
+       let rolledBack = false
+    
+       transaction.on('rollback', aborted => {
+           // emited with aborted === true
+           rolledBack = true
+       })
+       
+       let QueryReal = "UPDATE pieza SET existencia = "+existencia+ "WHERE idPieza= "+idPieza+";";
+
+       new sql.Request(transaction).query(QueryReal, (err,datos) => {
+           // insert should fail because of invalid value
+           if (err) {
+            console.log("Error: "+err);
+               if (!rolledBack) {
+                   transaction.rollback(err => {
+                      if(err){
+                       console.log("Error: "+err);
+                       throw err;    
+                       //Failed
+                      }else{
+                        res.status(400).send({info: "Actualizacion no realizada"});
+                      }
+                   })
+               }
+           } else {
+               transaction.commit(err => {
+                 if(err){
+                   console.log("Error: "+err);
+                   throw err;
+                   //Failed
+                  }else{
+                   res.status(200).send({info: "Actualizacion exitosa"});
+                   //Success
+                  } 
+               })
+           }//fin else
+       })
+     }})   
+});
+
 //Mostrar los atributos de una pieza especifica
 router.get("/api/piezas/:idPieza", async (req, res) => {
   
