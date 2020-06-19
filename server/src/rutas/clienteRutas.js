@@ -7,8 +7,7 @@ const sql = require("mssql/msnodesqlv8");
 var dbpool = require('../database');
 
 
-  //Regresa todos los clientes registrados
-
+//Regresa todos los clientes registrados
 router.get("/api/clientes", async (req, res) => {
     var clientes = null;
       try {
@@ -24,10 +23,10 @@ router.get("/api/clientes", async (req, res) => {
       } catch (error) {
         console.log(error);
       }
-    });
+});
   
   
-  //Registra un cliente 
+//Registra un cliente 
 router.post("/api/clientes/registro", async (req, res) => {
       
   let {razon_social, correo, calle, numero, cp, ciudad, estado, telefono, valido} = req.body;
@@ -47,7 +46,7 @@ router.post("/api/clientes/registro", async (req, res) => {
       })
       
       let QueryReal = "INSERT INTO clientefabrica (razon_social, correo, calle, numero, cp, ciudad, estado, telefono, valido) VALUES ('"+razon_social
-      +"','"+correo+"','"+calle+"',"+numero+","+cp+",'"+ciudad+"','"+estado+"',"+telefono+","+valido+");";
+      +"','"+correo+"','"+calle+"',"+numero+","+cp+",'"+ciudad+"','"+estado+"',"+telefono+",1);";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -79,7 +78,7 @@ router.post("/api/clientes/registro", async (req, res) => {
       })
     }})
    
-  });
+});
   
 
 //Dar de baja lógica a un cliente en especifico
@@ -133,10 +132,10 @@ router.delete("/api/clientes/elimina/:idCliente", async (req, res) => {
           }//fin else
       })
     }})
-  });
+});
   
 
-  //Actualiza los atributos que se quiera de un cliente
+//Actualiza los atributos que se quiera de un cliente
 router.put("/api/clientes/actualiza/:idCliente", async (req, res) => {
            //id a eliminar
     const { idCliente } =  req.params;
@@ -191,9 +190,7 @@ router.put("/api/clientes/actualiza/:idCliente", async (req, res) => {
          })
        }})
       
-  });
-
-
+});
 
 
 

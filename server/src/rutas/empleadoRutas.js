@@ -91,7 +91,7 @@ router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
 
   //Regresa todos los empleados registrados validos
 router.get("/api/empleados", async (req, res) => {
-    var eMidEmpleados = null;
+
     try {
       let QueryReal = "SELECT * FROM empleadofabrica";
       dbpool.query(QueryReal, (err, resultados)=>{
@@ -99,7 +99,8 @@ router.get("/api/empleados", async (req, res) => {
             console.log(err);
             res.status(404).send({info: "Error"});
         }else{
-            res.status(200).send({info: resultados.recordsets});              
+            res.status(200).send({info: resultados.recordsets});
+                          
         }
     })
     } catch (error) {
@@ -128,7 +129,7 @@ router.post("/api/empleados/registro",  (req, res) => {
       
       let QueryReal = "INSERT INTO empleadofabrica (nombre, apellido_paterno, apellido_materno, fecha_nacimiento,"+ 
       "calle, numero, cp, telefono, cargo, salario, correo, contrasena, valido) VALUES ('"+ 
-      nombre+"','"+apellido_paterno+"','"+apellido_materno+"','"+fecha_nacimiento+"','"+calle+"',"+numero+","+cp+","+telefono+",'"+cargo+"',"+salario+",'"+correo+"','"+contrasena+"',"+valido+");";
+      nombre+"','"+apellido_paterno+"','"+apellido_materno+"','"+fecha_nacimiento+"','"+calle+"',"+numero+","+cp+","+telefono+",'"+cargo+"',"+salario+",'"+correo+"','"+contrasena+"',1);";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
