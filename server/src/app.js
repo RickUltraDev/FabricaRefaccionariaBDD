@@ -35,8 +35,8 @@ app.use(require("./rutas/empleadoRutas"));
 app.use(require("./rutas/envioRutas"));
 app.use(require("./rutas/piezaRutas"));
 app.use(require("./rutas/facturaRutas"));
-/*app.use(require("./rutas/pedidoRutas"));
-app.use(require("./rutas/pagoRutas"));*/
+app.use(require("./rutas/pagoRutas"));
+/*app.use(require("./rutas/pedidoRutas"));*/
 
 /* Inciar la conexión con el server*/
 app.set("port", 3000 | process.env.connection);

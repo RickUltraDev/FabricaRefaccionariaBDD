@@ -91,7 +91,6 @@ router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
 
   //Regresa todos los empleados registrados validos
 router.get("/api/empleados", async (req, res) => {
-
     try {
       let QueryReal = "SELECT * FROM empleadofabrica";
       dbpool.query(QueryReal, (err, resultados)=>{
