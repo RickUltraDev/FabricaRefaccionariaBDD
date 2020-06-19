@@ -29,7 +29,7 @@ router.get("/api/clientes", async (req, res) => {
 //Registra un cliente 
 router.post("/api/clientes/registro", async (req, res) => {
       
-  let {razon_social, correo, calle, numero, cp, ciudad, estado, telefono, valido} = req.body;
+  let {razon_social, correo, calle, numero, cp, ciudad, estado, telefono} = req.body;
   const transaction = new sql.Transaction(dbpool)
   
   transaction.begin(err => {

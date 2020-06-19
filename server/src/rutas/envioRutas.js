@@ -28,7 +28,7 @@ router.get("/api/envios", async (req, res) => {
 
 //Registra un envio valido
 router.post("/api/envios/registro", async (req, res) => {
-  let { monto_envio, fecha_entrega, estatus, idPedido, valido} = req.body;
+  let { monto_envio, fecha_entrega, estatus, idPedido} = req.body;
  const transaction = new sql.Transaction(dbpool)
  
  transaction.begin(err => {

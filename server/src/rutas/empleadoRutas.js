@@ -111,7 +111,7 @@ router.get("/api/empleados", async (req, res) => {
 //El registro de empleados
 router.post("/api/empleados/registro",  (req, res) => {
   let {nombre, apellido_paterno, apellido_materno, fecha_nacimiento, calle, numero,
-     cp, telefono, cargo, salario, correo, contrasena, valido} = req.body;
+     cp, telefono, cargo, salario, correo, contrasena} = req.body;
   const transaction = new sql.Transaction(dbpool)
   
   transaction.begin(err => {

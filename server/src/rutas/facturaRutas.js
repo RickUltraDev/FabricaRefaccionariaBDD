@@ -1,140 +1,100 @@
 const express = require('express');
 const router = express.Router();
+const sql = require("mssql/msnodesqlv8");
 
 /* Conexión con BD*/
 var dbpool = require('../database');
 
 //Regresa todas las facturas validas registradas
 router.get("/api/facturas", async (req, res) => {
-    var facturas = null;
-      try {
-        dbpool.getConnection(function (err, connection) {
-          dbpool.query("SELECT * FROM facturasvalidas", function (
-            err,
-            results
-          ) {
-            facturas = results;
-            if (facturas != null) {
-              res.json({
-                message: "Encontradas",
-                JsonArray: facturas,
-              });
-            } else {
-              res.json({
-                message: "No Encontradas",
-                JsonArray: facturas,
-              });
-            }
-
-            //Cuando termine de hacer su tarea suelta la conexión
-            connection.release();
-          });
-        });
-      } catch (error) {
-        console.log(error);
+  var facturas = null;
+  try {
+    let QueryReal = "SELECT * FROM facturafabrica";
+    dbpool.query(QueryReal, (err, resultados)=>{
+      if(err){
+          console.log(err);
+          res.status(404).send({info: "Error"});
+      }else{
+          res.status(200).send({info: resultados.recordsets});
+          //console.log(resultados.recordsets[0][0].idPieza);              
       }
-    });
+  })
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 
   //Registra una factura valida
 router.post("/api/facturas/registro", async (req, res) => {
-        dbpool.getConnection(function (err, connection) {
+  let {fecha, total, idPedido, idEmpleado} = req.body;
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })
+      
+      let QueryReal = "INSERT INTO facturafabrica (fecha, total, idPedido, idEmpleado ) VALUES "+
+      "('"+fecha+"',"+total+","+idPedido+","+idEmpleado+");";
+      
+      new sql.Request(transaction).query(QueryReal, (err,datos) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  res.status(200).send({info: "Registro exitoso"});
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})  
+});
 
-            
-          /* Begin transaction */
-          connection.beginTransaction(function (err) {
-            if (err) {
-              console.log("Error " + err);  
-              connection.rollback(function() {
-                  connection.release();
-                  //Failure
-              });
-            }else{
-  
-            connection.query("INSERT INTO facturafabrica set ?", [req.body], function (err, result) {
-                if (err) {
-                  console.log("Error " + err);
-                  connection.rollback(function() {
-                      connection.release();
-                      //Failure
-                  });
-                }
-               
-                     
-                connection.commit(function (err) {
-                  if (err) {
-                      console.log("Error " + err);
-                      connection.rollback(function() {
-                          connection.release();
-                          //Failure
-                      });
-                  }else{
-                      
-                      connection.release();
-                      res.json({ message: "Registro creado" });
-                      //Success
-                  }
-  
-                });
-  
-              }); //fin query
-            }
-  
-          });//fin conexión
-  
-        });
-      });
+//Regresa una factura hecha para cierto pedido
+router.get("/api/facturas/:idPedido", async (req, res) => {
+  const { idPedido } = req.params;
+  try {
+    let QueryReal = "SELECT * FROM facturafabrica WHERE idPedido = "+idPedido;
+    dbpool.query(QueryReal, (err, resultados)=>{
+      if(err){
+          console.log(err);
+          res.status(404).send({info: "Error"});
+      }else{
+          res.status(200).send({info: resultados.recordsets[0][0]});          
+      }
+  })
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-
-  //Actualizar una factura
-router.put("/api/facturas/actualiza/:idFactura", async (req, res) => {
-         
-        //id del cliente a eliminar
-        const { idFactura } =  req.params;
-
-        dbpool.getConnection(function (err, connection) {
-          /* Begin transaction */
-          connection.beginTransaction(function (err) {
-            if (err) {
-              console.log("Error " + err);
-              connection.rollback(function() {
-                  connection.release();
-                  //Failure
-              });
-            }else{
-  
-            connection.query("UPDATE facturafabrica SET ? WHERE idFactura = ?", [req.body,idFactura], function (err, result) {
-                if (err) {
-                  console.log("Error " + err);
-                  connection.rollback(function() {
-                      connection.release();
-                      //Failure
-                  });
-                }
-               
-                     
-                connection.commit(function (err) {
-                  if (err) {
-                    console.log("Error " + err);
-                      connection.rollback(function() {
-                          connection.release();
-                          //Failure
-                      });
-                  }else{
-                      connection.release();
-                      res.json({ message: "Actualizado exitosamente" });
-                      //Success
-                  }
-  
-                });
-  
-              }); //fin query
-            }
-  
-          });//fin conexión
-  
-        });
-      });
 
 
 module.exports = router;
