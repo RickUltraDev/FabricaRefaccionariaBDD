@@ -111,7 +111,7 @@ router.get("/api/empleados/perfil", verifyToken, async (req, res) => {
 
 //-----------------------------------FUNCIONES BÁSICAS DEL API----------------------------------
 
-  //Regresa todos los empleados registrados validos
+//Regresa todos los empleados registrados validos
 router.get("/api/empleados", async (req, res) => {
     try {
       let QueryReal = "SELECT * FROM empleadofabrica";
@@ -238,7 +238,6 @@ router.delete("/api/empleados/elimina/:idEmpleado", (req, res) => {
       
 });
   
-
 //Actualiza los atributos que se quiera de un respEmpleado
 router.put("/api/empleados/actualiza/:idEmpleado", async (req, res) => {
 
@@ -297,6 +296,7 @@ router.put("/api/empleados/actualiza/:idEmpleado", async (req, res) => {
        }})    
     
 });
+
 
 //Actualiza la información del empleado para ser ascendido
 router.put("/api/empleados/cargo/:idEmpleado", (req, res) => {

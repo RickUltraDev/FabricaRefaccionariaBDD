@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev")); //Este middleware sirve para ver el estatus de los req
 
  //Cross origin resourse sharing esto es para compartir información entre difs. dominios
-app.use(cors({origin: ["http://localhost:4200",],credentials: false,}));
+app.use(cors({origin: ["http://localhost:4200",],credentials: true}));
 
 app.use(express.json()); //Es para se convertir los body.req a json, tambien podría ser usado body-parse.json
 app.use(express.urlencoded({ extended: false }));

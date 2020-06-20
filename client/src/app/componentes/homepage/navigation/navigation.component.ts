@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router"; //Para redireccionar a otra ruta si es que se necesita
 
-//Servicios que usará la pagina
-import { EmpleadoService } from "../../../servicios/empleado.service";
-
+/* Servicios a usar */
+import { AuthService } from "../../../servicios/auth.service";
 
 @Component({
   selector: 'app-navigation',
@@ -11,33 +10,26 @@ import { EmpleadoService } from "../../../servicios/empleado.service";
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  
-  rolDeUsuario:any;
-  jojos:boolean;
 
   constructor(
-    private empleadoService: EmpleadoService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit(){
-    this.getLogin();
-    this.rolDeUsuario = JSON.parse(this.readSessionStorageValue('currentUser'));
-  }
 
-  
+  }
   
    //Funciones que hará nuestra pagina
-
-   getLogin(){
-    
+   postLogout(){
+    this.authService.logout();
   }
 
-
-   //Regresar lo que tenga sessionstorage
-   readSessionStorageValue(key: string): string {
-    return sessionStorage.getItem(key)
+  getLog(){
+    return this.authService.logeado();
   }
+ 
+
 
 
 }

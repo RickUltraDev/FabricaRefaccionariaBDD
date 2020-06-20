@@ -3,7 +3,7 @@ import { Router } from "@angular/router"; //Para redireccionar a otra ruta si es
 import { FormGroup, FormBuilder, Validators } from "@angular/forms"; //Para validar los formularios
 
 //Servicios que usará la pagina
-import { EmpleadoService } from "../../../servicios/empleado.service";
+import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -16,15 +16,16 @@ export class HomeComponent implements OnInit {
   public correo:string;
   public contrasena:string;
 
+
   //Formulario a comprobar
   loginForm: FormGroup;
   
   //El constructor recibe el servicio y los validores del formulario
 
   constructor(
-    private empleadoService: EmpleadoService,
     private builder: FormBuilder,
     private router: Router,
+    private authService: AuthService
   ) { 
     this.loginForm = this.builder.group({
       correo: ['', [Validators.required, Validators.email]],
@@ -42,12 +43,15 @@ export class HomeComponent implements OnInit {
   async postLogin(correo:string , contrasena:string){
     try {
       if (!this.loginForm.invalid) {
-        await this.empleadoService.postServiceLogin(this.correo, this.contrasena);
+          this.authService.login(correo, contrasena);
+          //Todos los subscribe van en el servicio
       }
     } catch (err) {
       console.log(err);
     }
   }
+   
+  
 
   
 

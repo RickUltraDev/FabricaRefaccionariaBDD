@@ -1,44 +1,134 @@
  <!-- barra de navegacion-->
+ 
+ <ng-container *ngIf="getLog() == true">
  <nav class="navbar navbar-expand-lg navbar-toggleable-md navbar-dark bg-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand " routerLink="/"><i class="fa fa-home fa-1.5x"></i>INICIO</a>
+       
+       <ng-container *ngIf="getLog() == true">
+        <a class="navbar-brand " routerLink="pedido/registrados"><i class="fa fa-home fa-1x"></i>INICIO</a>
+       </ng-container>
+
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01" *ngIf="rolDeUsuario != null && rolDeUsuario.cargo == 'e'">
-            <!-- El centrado de navbar -->
 
-            <!-- Hasta aqui el login del empleado-->
-           <!-- <ul class="navbar-nav mr-auto ml-auto text-center">
-                
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Gestion de Pedidos </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Envios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Piezas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Pagos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Facturación</a>
-                </li>
+       <ng-container *ngIf="getLog() == true">
+       
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01" >
+            <ul class="navbar-nav mr-auto ml-auto text-center">
+                <!-- El centrado de navbar -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Clientes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <h6 class="dropdown-header">Manejo clientes</h6>
+                      <a class="dropdown-item" href="#">Nuevo cliente</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" href="#">Baja cliente</a>
+                      <a class="dropdown-item" href="#">Cambio cliente</a>
+                      <a class="dropdown-item" href="#">Consulta clientes</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Empleados
+                    </a>
+                    <div class="dropdown-menu" >
+                      <h6 class="dropdown-header">Manejo empleados</h6>
+                      <a class="dropdown-item" routerLink="empleado/registro">Nuevo empleado</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" routerLink="empleado/baja">Baja empleado</a>
+                      <a class="dropdown-item"  routerLink="empleado/modificar">Cambio empleado</a>
+                      <a class="dropdown-item" routerLink="/">Cambio de puesto</a>
+                      <a class="dropdown-item" routerLink="empleado/registrados">Consulta empleados</a>
+                    </div>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
+                      Envios
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <h6 class="dropdown-header">Manejo envios</h6>
+                      <a class="dropdown-item" href="#">Nuevo envio</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" href="#">Baja envio</a>
+                      <a class="dropdown-item" href="#">Cambios a envios</a>
+                      <a class="dropdown-item" href="#">Proceso envio </a>
+                      <a class="dropdown-item" href="#">Consulta envios</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Facturas
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <h6 class="dropdown-header">Manejo facturas</h6>
+                      <a class="dropdown-item" href="#">Nueva factura</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" href="#">Consulta una factura</a>
+                      <a class="dropdown-item" href="#">Consultas facturas</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Pagos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <h6 class="dropdown-header">Manejo pagos</h6>
+                      <!--En esta ruta tendrá pagos a credito y de contado  -->
+                      <a class="dropdown-item" href="#">Consulta pagos</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" href="#">Actualiza pago</a>
+                      <a class="dropdown-item" href="#">Abonos a pedido</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Pedidos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <h6 class="dropdown-header">Manejo pedidos</h6>
+                      <a class="dropdown-item" href="#">Nuevo pedido</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" href="#">Baja pedido</a>
+                      <a class="dropdown-item" href="#">Actualiza un pedido</a>
+                      <a class="dropdown-item" href="#">Consulta pedidos</a>
+                      <a class="dropdown-item" href="#">Consulta No surtidos</a>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Piezas
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <h6 class="dropdown-header">Manejo piezas</h6>
+                      <a class="dropdown-item" href="#">Nueva pieza</a>
+                      <!--<div class="dropdown-divider"></div>-->
+                      <a class="dropdown-item" href="#">Baja pieza</a>
+                      <a class="dropdown-item" href="#">Actualiza una pieza</a>
+                      <a class="dropdown-item" href="#">Actualiza piezas</a>
+                      <a class="dropdown-item" href="#">Consulta piezas</a>
+                      <a class="dropdown-item" href="#">Consulta una pieza</a>
+                    </div>
+                  </li>
             </ul>
-          -->
+            <br>
              
             <br>
-            <div class="d-flex justify-content-center" >
-                <a routerLink="https://twitter.com/pizzahut" class="btn btn-outline-primary mr-2" ><i class="fa fa-user"></i>
-            
-                </a>
-                <a routerLink="pedido/registro" class="btn btn-outline-danger mr-2"><i class="fa fa-sign-out"></i></a> 
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-outline-primary mr-2" routerLink="pedido/registrados" ><i class="fa fa-user"> Encargado</i></a>
+                <a class="btn btn-outline-danger mr-2" routerLink="/" (click)="postLogout()"><i class="fa fa-sign-out"></i></a> 
 
             </div>
             
         </div>
+
+      </ng-container>
+
+
     </div>
 </nav>
+</ng-container>

@@ -226,7 +226,7 @@ router.get("/api/pedidos/surtidos", async (req, res) => {
   }
 });
 
-//Regresa los pedidos que aun no se han surtido
+//Regresa el gasto promedio de pedidos
 router.get("/api/pedidos/gasto", async (req, res) => {
   try {
     let QueryReal = "SELECT Cast(Round(sum(total_pagar)/count(*),2,1) as decimal(18,2)) FROM pedidofabrica;";

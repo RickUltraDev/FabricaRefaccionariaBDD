@@ -11,7 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 
 /* HTTP Module for RestAPI*/
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -19,14 +19,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './componentes/homepage/home/home.component';
 import { NavigationComponent } from './componentes/homepage/navigation/navigation.component';
 import { FooterComponent } from './componentes/homepage/footer/footer.component';
-/* Modulos de todo lo demás */
 
+/* Modulos de todo lo demás */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EmpleadoRegistroComponent } from './componentes/empleado/empleado-registro/empleado-registro.component';
 import { EmpleadoRegistradosComponent } from './componentes/empleado/empleado-registrados/empleado-registrados.component';
 import { EmpleadoModificarComponent } from './componentes/empleado/empleado-modificar/empleado-modificar.component';
 import { PedidoRegistradosComponent } from './componentes/pedido/pedido-registrados/pedido-registrados.component';
 import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/pedido-registrar.component';
+import { PiezaRegistrarComponent } from './componentes/pieza/pieza-registrar/pieza-registrar.component';
+import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
+import { EmpleadoBajaComponent } from './componentes/empleado/empleado-baja/empleado-baja.component';
+
+/*Guards  de las rutas */
+import {AuthGuard} from './guards/auth.guard';
+
+/* Interceptor del token */
+import {TokenInterceptorService} from './servicios/token-interceptor.service'
 
 
 @NgModule({
@@ -39,7 +48,10 @@ import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/
     EmpleadoRegistradosComponent,
     EmpleadoModificarComponent,
     PedidoRegistradosComponent,
-    PedidoRegistrarComponent
+    PedidoRegistrarComponent,
+    PiezaRegistrarComponent,
+    PiezaRegistradosComponent,
+    EmpleadoBajaComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +63,14 @@ import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
