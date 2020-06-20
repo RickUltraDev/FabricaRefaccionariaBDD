@@ -31,16 +31,15 @@ const routes: Routes = [
    { path: "navigation", component: NavigationComponent
     , children:[
       { path: "empleado/registro", component: EmpleadoRegistroComponent},
-    ]},
-
-   { path: "pedido/registro", component: PedidoRegistrarComponent},
-   { path: "pedido/registrados", component: PedidoRegistradosComponent},
-  
-   { path: "empleado/modificar", component: EmpleadoModificarComponent},
-   { path: "empleado/baja", component: EmpleadoBajaComponent},
-   { path: "empleado/registrados", component: EmpleadoRegistradosComponent, canActivate:[AuthGuard]},
-   { path: "pieza/registro", component: PiezaRegistrarComponent},
-   { path: "pieza/registrados", component: PiezaRegistradosComponent}
+      { path: "pedido/registro", component: PedidoRegistrarComponent},
+      { path: "pedido/registrados", component: PedidoRegistradosComponent},
+     
+      { path: "empleado/modificar", component: EmpleadoModificarComponent},
+      { path: "empleado/baja", component: EmpleadoBajaComponent},
+      { path: "empleado/registrados", component: EmpleadoRegistradosComponent, canActivate:[AuthGuard]},
+      { path: "pieza/registro", component: PiezaRegistrarComponent},
+      { path: "pieza/registrados", component: PiezaRegistradosComponent}
+    ]}
    
 ];
 

@@ -106,14 +106,11 @@ router.get("/api/empleados/perfil", verifyToken, async (req, res) => {
 });
 
 
-
 //rutas de prueba
 router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
 
-  console.log('EMPLEADO CON TOKEN');
-  res.status(200).send({info:"la wea" });  
+  res.status(200).send({info:"alguna info" });  
 });
-
 
 
 //-----------------------------------FUNCIONES BÁSICAS DEL API----------------------------------

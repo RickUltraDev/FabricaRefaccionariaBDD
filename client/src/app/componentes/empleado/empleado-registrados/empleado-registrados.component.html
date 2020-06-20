@@ -1,1 +1,32 @@
-<p>empleado-registrados works!</p>
+<div class="contenedor container pt-5">
+    <!-- Tabla para empleados normales -->
+    <table class="table  table-bordered table-hover table-sm-responsive">
+        <thead class="thead-dark">
+          <tr class="text-uppercase text-center">
+            <th>#id</th>
+            <th>nombre</th>
+            <th>apellidos</th>
+            <th>fecha nacimineto</th>
+            <th>domicilio</th>
+            <th>cp</th>
+            <th>salario</th>
+            <th>telefono</th>
+            <th>correo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empleado of empleados;let indice as i" class="text-center">
+            <th  scope="row">{{empleado.idEmpleado}}</th>
+            <td>{{empleado.nombre}}</td>
+            <td>{{empleado.apellido_paterno}} {{empleado.apellido_materno}}</td>
+            <td>{{empleado.fecha_nacimiento | date:"dd/MM/yyyy"}}</td>
+            <td>{{empleado.calle}} {{empleado.numero}}</td>
+            <td>{{empleado.cp}}</td>
+            <td>{{empleado.salario | currency}} MXN</td>
+            <td>{{empleado.telefono}}</td>
+            <td>{{empleado.correo}}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+</div>
