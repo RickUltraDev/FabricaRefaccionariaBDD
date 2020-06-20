@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 /*Modulos home y submenus */
 import {HomeComponent} from './componentes/homepage/home/home.component';
+import { NavigationComponent } from "./componentes/homepage/navigation/navigation.component";
+
 
 /*Modulos para todo lo demás */
 import { EmpleadoRegistroComponent } from './componentes/empleado/empleado-registro/empleado-registro.component';
@@ -23,14 +25,17 @@ Pieza/registro, Pieza/modificar*/
 /* Guards de las rutas */
 import { AuthGuard } from "./guards/auth.guard";
 
-
-
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
    { path: "home", component: HomeComponent},
+   { path: "navigation", component: NavigationComponent
+    , children:[
+      { path: "empleado/registro", component: EmpleadoRegistroComponent},
+    ]},
+
    { path: "pedido/registro", component: PedidoRegistrarComponent},
    { path: "pedido/registrados", component: PedidoRegistradosComponent},
-   { path: "empleado/registro", component: EmpleadoRegistroComponent, canActivate:[AuthGuard]},
+  
    { path: "empleado/modificar", component: EmpleadoModificarComponent},
    { path: "empleado/baja", component: EmpleadoBajaComponent},
    { path: "empleado/registrados", component: EmpleadoRegistradosComponent, canActivate:[AuthGuard]},

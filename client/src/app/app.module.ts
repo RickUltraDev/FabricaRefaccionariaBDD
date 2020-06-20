@@ -15,10 +15,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+/*Guards  de las rutas */
+import {AuthGuard} from './guards/auth.guard';
+
+/* Interceptor del token */
+import {TokenInterceptorService} from './servicios/token-interceptor.service';
+
 /* Modulos pagina de inicio*/
 import { HomeComponent } from './componentes/homepage/home/home.component';
 import { NavigationComponent } from './componentes/homepage/navigation/navigation.component';
-import { FooterComponent } from './componentes/homepage/footer/footer.component';
 
 /* Modulos de todo lo demás */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -31,18 +36,12 @@ import { PiezaRegistrarComponent } from './componentes/pieza/pieza-registrar/pie
 import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
 import { EmpleadoBajaComponent } from './componentes/empleado/empleado-baja/empleado-baja.component';
 
-/*Guards  de las rutas */
-import {AuthGuard} from './guards/auth.guard';
-
-/* Interceptor del token */
-import {TokenInterceptorService} from './servicios/token-interceptor.service'
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    FooterComponent,
     HomeComponent,
     EmpleadoRegistroComponent,
     EmpleadoRegistradosComponent,

@@ -27,8 +27,8 @@ export class AuthService {
      .post<any>(environment.apiUlrl + "/empleados/login", JSON.stringify({correo, contrasena}),this.httpOptions).subscribe((resp:any) => {
         //Guardamos el token en la session del navegador
         sessionStorage.setItem('token', resp.token);
-        this.toastr.success("Bienvenido","Sesion iniciada con éxito");  
-        this.router.navigate(["empleado/registrados"]);
+        this.toastr.success("Bienvenido ","Sesion iniciada con éxito");  
+        this.router.navigate(["navigation"]);
       
     }, (error:any)=>{
       this.toastr.error("Los datos ingresados son incorrectos, verificalos.","Error");  
@@ -38,21 +38,28 @@ export class AuthService {
 
   }
 
-  //Funcion para ver si esta logeado el usuario
+  //Función para ver si esta logeado el usuario
   logeado(){
     return !!sessionStorage.getItem('token'); 
   }
   
-  //Esto es para saber si se tiene actualmente el token
+  //Función para saber si se tiene actualmente el token
   getToken(){
     return sessionStorage.getItem('token'); 
   }
-
+  
+  //Función para cerrar sesion removiendo el token de autorización
   logout(){
     sessionStorage.removeItem('token');
-    this.toastr.info("Nos vemos","Hasta luego");  
+    this.toastr.info("Hasta luego","Sesion finalizada");  
     this.router.navigate['/'];
   }
+  
+  //Función para regresar los detalles del usuario logeado
+  getLogeado(){
+    return this.http.get<any>(environment.apiUlrl + "/empleados/perfil");
+  }
+
 
 
 

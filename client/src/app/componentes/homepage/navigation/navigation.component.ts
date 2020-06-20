@@ -10,6 +10,11 @@ import { AuthService } from "../../../servicios/auth.service";
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
+   usuarioLog = {
+     id: '',
+     nombre: '',
+     cargo: '',
+   };
 
   constructor(
     private router: Router,
@@ -17,7 +22,7 @@ export class NavigationComponent implements OnInit {
   ) { }
 
   ngOnInit(){
-
+    this.getUser();
   }
   
    //Funciones que hará nuestra pagina
@@ -27,8 +32,16 @@ export class NavigationComponent implements OnInit {
 
   getLog(){
     return this.authService.logeado();
+    
   }
- 
+  
+  getUser(){
+    this.authService.getLogeado().subscribe((resp: any) => {
+       if(resp != null){
+        this.usuarioLog =  resp.info;
+       }
+    });
+  } 
 
 
 

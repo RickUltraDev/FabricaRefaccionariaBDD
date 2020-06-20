@@ -29,8 +29,9 @@ var dbpool = require('../database');
 
     //Aqui se verifica el token y se saca la información que tiene (payload)
     const payload = jwt.verify(token, 'secretkey')
-    //En req se creará una propiedad que tenga el id del usr logueado
-    req.userId = payload.id;
+    //En req se creará una propiedad de req que tenga el usuario logeado
+    req.user = payload.user;
+    
     next();
     
  }
@@ -83,8 +84,8 @@ router.post("/api/empleados/login", async (req, res) => {
                   
                   if (datos.recordsets[0].length == 1) {
                     respEmpleado = datos.recordsets[0][0];
-                    const token = jwt.sign({id:respEmpleado.idEmpleado}, 'secretkey', { expiresIn: '2h' });               
-                    res.status(200).send({token: token});
+                    const token = jwt.sign({user:respEmpleado}, 'secretkey', { expiresIn: '2h' });               
+                    res.status(200).send({token: token, user: respEmpleado});
                   }else{
                     res.status(404).send({token: null});
                   }  
@@ -96,17 +97,23 @@ router.post("/api/empleados/login", async (req, res) => {
     }})   
 });
 
+//Regresa los datos del usuario si esta logueado
+router.get("/api/empleados/perfil", verifyToken, async (req, res) => {
+
+  //Aqui se podría poner un select * from empleados que busque el id de la req.id y te regrese los datos de usuario
+  res.status(200).send({info: req.user});  
+  
+});
+
+
+
 //rutas de prueba
 router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
+
   console.log('EMPLEADO CON TOKEN');
   res.status(200).send({info:"la wea" });  
 });
 
-router.get("/api/empleados/perfil", verifyToken, async (req, res) => {
-  //Aqui se podría poner un select * from empleados que busque el id de la req.id y te regrese los datos de usuario
-  res.status(200).send({info: req.userId});  
-  
-});
 
 
 //-----------------------------------FUNCIONES BÁSICAS DEL API----------------------------------

@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
     try {
       if (!this.loginForm.invalid) {
           this.authService.login(correo, contrasena);
+          
           //Todos los subscribe van en el servicio
       }
     } catch (err) {
