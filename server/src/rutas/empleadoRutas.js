@@ -375,6 +375,66 @@ router.get("/api/empleados/salarioprom", async (req, res) => {
   }
 });
 
+//Busqueda de un empleado
+//SELECT * FROM empleadofabrica WHERE nombre LIKE 'r%' AND apellido_materno LIKE 'h%' AND apellido_paterno LIKE 's%';
+//El registro de empleados
+router.post("/api/empleados/busqueda",  (req, res) => {
+  let {nombre, apellido_paterno, apellido_materno, cargo} = req.body;
+
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })
+
+      console.log(req.body);
+      
+            
+      let QueryReal = "SELECT * FROM empleadofabrica"+
+      " WHERE cargo = '"+cargo+"' AND nombre LIKE '"+nombre+"%' OR apellido_materno LIKE '"+apellido_materno+
+      "%' OR apellido_paterno LIKE '"+apellido_paterno+"%';";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  res.status(200).send({info: resultados.recordsets});
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
 
 
 module.exports = router;

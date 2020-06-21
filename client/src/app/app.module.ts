@@ -34,7 +34,6 @@ import { PedidoRegistradosComponent } from './componentes/pedido/pedido-registra
 import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/pedido-registrar.component';
 import { PiezaRegistrarComponent } from './componentes/pieza/pieza-registrar/pieza-registrar.component';
 import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
-import { EmpleadoBajaComponent } from './componentes/empleado/empleado-baja/empleado-baja.component';
 
 
 
@@ -49,8 +48,7 @@ import { EmpleadoBajaComponent } from './componentes/empleado/empleado-baja/empl
     PedidoRegistradosComponent,
     PedidoRegistrarComponent,
     PiezaRegistrarComponent,
-    PiezaRegistradosComponent,
-    EmpleadoBajaComponent
+    PiezaRegistradosComponent
   ],
   imports: [
     BrowserModule,

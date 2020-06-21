@@ -10,7 +10,6 @@ import { NavigationComponent } from "./componentes/homepage/navigation/navigatio
 import { EmpleadoRegistroComponent } from './componentes/empleado/empleado-registro/empleado-registro.component';
 import { EmpleadoRegistradosComponent } from './componentes/empleado/empleado-registrados/empleado-registrados.component';
 import { EmpleadoModificarComponent } from './componentes/empleado/empleado-modificar/empleado-modificar.component';
-import { EmpleadoBajaComponent } from './componentes/empleado/empleado-baja/empleado-baja.component';
 import { PedidoRegistradosComponent } from './componentes/pedido/pedido-registrados/pedido-registrados.component';
 import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/pedido-registrar.component';
 import { PiezaRegistrarComponent} from './componentes/pieza/pieza-registrar/pieza-registrar.component';
@@ -31,12 +30,10 @@ const routes: Routes = [
    { path: "navigation", component: NavigationComponent
     , children:[
       { path: "empleado/registro", component: EmpleadoRegistroComponent},
-      { path: "pedido/registro", component: PedidoRegistrarComponent},
-      { path: "pedido/registrados", component: PedidoRegistradosComponent},
-     
       { path: "empleado/modificar", component: EmpleadoModificarComponent},
-      { path: "empleado/baja", component: EmpleadoBajaComponent},
       { path: "empleado/registrados", component: EmpleadoRegistradosComponent, canActivate:[AuthGuard]},
+      { path: "pedido/registro", component: PedidoRegistrarComponent},
+      { path: "pedido/registrados", component: PedidoRegistradosComponent}, 
       { path: "pieza/registro", component: PiezaRegistrarComponent},
       { path: "pieza/registrados", component: PiezaRegistradosComponent}
     ]}

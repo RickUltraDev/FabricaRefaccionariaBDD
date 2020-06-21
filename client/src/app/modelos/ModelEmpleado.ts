@@ -1,5 +1,4 @@
 export class ModelEmpleado{
-    public idEmpleado:number;
     public nombre:string;   
     public apellido_paterno:string;
     public apellido_materno:string;
@@ -16,7 +15,6 @@ export class ModelEmpleado{
     
 
     constructor(){
-        this.idEmpleado = 0,
         this.nombre = '',
         this.apellido_paterno = '',
         this.apellido_materno = '',
@@ -29,7 +27,7 @@ export class ModelEmpleado{
         this.salario = 0,
         this.correo = '',
         this.contrasena = '',
-        this.valido = 0    
+        this.valido = 1    
     }
 
 
