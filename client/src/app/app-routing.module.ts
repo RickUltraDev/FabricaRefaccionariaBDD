@@ -29,9 +29,10 @@ const routes: Routes = [
    { path: "home", component: HomeComponent},
    { path: "navigation", component: NavigationComponent
     , children:[
-      { path: "empleado/registro", component: EmpleadoRegistroComponent},
-      { path: "empleado/modificar", component: EmpleadoModificarComponent},
+      { path: "empleado/registro", component: EmpleadoRegistroComponent , canActivate:[AuthGuard]},
+      { path: "empleado/modificar", component: EmpleadoModificarComponent, canActivate:[AuthGuard]},
       { path: "empleado/registrados", component: EmpleadoRegistradosComponent, canActivate:[AuthGuard]},
+
       { path: "pedido/registro", component: PedidoRegistrarComponent},
       { path: "pedido/registrados", component: PedidoRegistradosComponent}, 
       { path: "pieza/registro", component: PiezaRegistrarComponent},
@@ -40,6 +41,7 @@ const routes: Routes = [
    
 ];
 
+ 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
