@@ -249,6 +249,10 @@ router.put("/api/empleados/actualiza/:idEmpleado", async (req, res) => {
     let {nombre, apellido_paterno, apellido_materno, fecha_nacimiento, calle, numero,
       cp, telefono, cargo, salario, correo, contrasena, valido} = req.body;
     const transaction = new sql.Transaction(dbpool)
+
+    console.log(req.body);
+    console.log(req.params);
+    
      
      transaction.begin(err => {
           if(err){
@@ -376,8 +380,6 @@ router.get("/api/empleados/salarioprom", async (req, res) => {
 });
 
 //Busqueda de un empleado
-//SELECT * FROM empleadofabrica WHERE nombre LIKE 'r%' AND apellido_materno LIKE 'h%' AND apellido_paterno LIKE 's%';
-//El registro de empleados
 router.post("/api/empleados/busqueda",  (req, res) => {
   let {nombre, apellido_paterno, apellido_materno, cargo} = req.body;
 
@@ -425,7 +427,16 @@ router.post("/api/empleados/busqueda",  (req, res) => {
                   throw err;
                   //Failed
                  }else{
-                  res.status(200).send({info: resultados.recordsets});
+                
+
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets});
+                    
+                  }
+                  
                   //Success
                  } 
               })

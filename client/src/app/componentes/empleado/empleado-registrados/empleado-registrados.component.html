@@ -1,4 +1,4 @@
-<div class="container pt-5">
+<div class="container pt-5 mb-5">
 
   <form novalidate [formGroup]="busquedaForm" (ngSubmit)="busquedaEmpleado();" class="mb-4">
    <h4 class="text-left">Empleados registrados</h4>
@@ -45,10 +45,11 @@
             <td >{{empleado.apellido_paterno}} {{empleado.apellido_materno}}</td>
             <td >{{empleado.fecha_nacimiento | date:"dd/MM/yyyy"}}</td>
             <td >{{empleado.calle}} {{empleado.numero}}</td>
-            <td >{{empleado.cp}}</td>
             <td >{{empleado.salario | currency:'USD'}} </td>
             <td >{{empleado.telefono}}</td>
             <td >{{empleado.correo}}</td>
+            <td *ngIf="empleado.cargo == 'e'">encargado</td>
+            <td *ngIf="empleado.cargo == 'n'">general</td>
             <td><button type="button" class="btn btn-outline-danger btn-sm" (click)="eliminarEmpleados(empleado.idEmpleado)">Eliminar</button></td>
  
           </ng-container>

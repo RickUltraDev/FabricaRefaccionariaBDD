@@ -1,17 +1,184 @@
-<div class="container pt-5">
-    <form novalidate>
-        <h4 class="text-left">Empleados registrados</h4>
-        <div class="row mb-2">
-          <div class="col-md-4">
-            <div class="input-group">
-              <span class="input-group-text" id="basic-addon1">Nombre: </span>
-              <input type="text" maxlength="60" class="form-control">
+<div class="container pt-5 mb-5">
+
+  <form novalidate [formGroup]="busquedaForm" (ngSubmit)="busquedaEmpleado();" class="mb-4">
+   <h4 class="text-left"> Busqueda Empleados</h4>
+    <div class="row mb-2">
+      
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Cargo:</span>
+          <select class="browser-default custom-select" [(ngModel)]="cargo" formControlName="cargo">
+            <option [ngValue]="null" disabled> Elige puesto.. </option>
+            <option *ngFor="let cargo of Cargos" [ngValue]="cargo">{{cargo}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Nombre: </span>
+          <input type="text"  [(ngModel)]="nombre" formControlName="nombre" maxlength="60" class="form-control">
+        </div>
+      </div>
+    
+      <div class="col-md-2">
+        <div class="input-group">
+          <button type="submit" [disabled]="busquedaForm.invalid" class="btn btn-outline-secondary">Buscar</button>
+        </div>
+      </div>
+    </div>
+   </form>
+
+    <!-- Tabla para empleados normales -->
+    <table  class="table table-bordered table-hover table-md-responsive">
+        <thead class="thead-dark">
+          <tr class="text-uppercase text-center">
+            <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empleado of empleados;let indice as i" class="text-center">
+           <ng-container>
+            
+            <th scope="row">{{empleado.idEmpleado}}</th>
+            <td>{{empleado.nombre}} </td>
+            <td >{{empleado.apellido_paterno}} {{empleado.apellido_materno}}</td>
+            <td >{{empleado.fecha_nacimiento | date:"dd/MM/yyyy"}}</td>
+            <td >{{empleado.calle}} {{empleado.numero}}</td>
+            <td >{{empleado.salario | currency:'USD'}} </td>
+            <td >{{empleado.telefono}}</td>
+            <td >{{empleado.correo}}</td>
+            <td *ngIf="empleado.cargo == 'e'">encargado</td>
+            <td *ngIf="empleado.cargo == 'n'">general</td>
+        
+            <td><button type="button" class="btn btn-outline-warning btn-sm" (click)="toggleModficar(empleado);" >Modificar</button></td>    
+          </ng-container>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <ng-container  *ngIf="buttonModifica == true">
+        <form novalidate class="pb-5 pr-0"  [formGroup]="empleadoForm" (ngSubmit)="postEmpleadoModifica();">
+          <h4 class="text-left">Datos personales</h4>
+      
+          <div class="row mb-2">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Nombre(s):</span>
+                <input type="text" [(ngModel)]="empleadoaux.nombre" formControlName="nombre" maxlength="60" class="form-control">
+              </div>
+            </div>
+      
+             <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Apellido paterno:</span>
+                <input type="text" [(ngModel)]="empleadoaux.apellido_paterno" formControlName="apellido_paterno"  maxlength="45" class="form-control">
+              </div>
+            </div>
+      
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Apellido materno:</span>
+                <input type="text" [(ngModel)]="empleadoaux.apellido_materno" formControlName="apellido_materno"   maxlength="45" class="form-control">
+              </div>
             </div>
           </div>
-        </div>
-    </form>
+         
+      
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Fecha Nacimiento:</span>
+                <input type="date" [(ngModel)]="empleadoaux.fecha_nacimiento" formControlName="fecha_nacimiento" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Teléfono:</span>
+                <input type="number" [(ngModel)]="empleadoaux.telefono" formControlName="telefono" min="0" maxlength="10" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Cargo solicitado:</span>
+                <select class="browser-default custom-select" [(ngModel)]="empleadoaux.cargo" formControlName="cargo">
+                  <option [ngValue]="null" disabled> Elige puesto.. </option>
+                  <option *ngFor="let cargo of Cargos" [ngValue]="cargo">{{cargo}}</option>
+                </select>
+              </div>
+            </div>
+      
+          </div>
+      
+      
+          <h4 class="text-left">Domicilio </h4>
+      
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Calle:</span>
+                <input type="text" [(ngModel)]="empleadoaux.calle" formControlName="calle"  maxlength="50" class="form-control">
+              </div>
+            </div>
+             <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Numero:</span>
+                <input type="number" [(ngModel)]="empleadoaux.numero" formControlName="numero" min="0" maxlength="9"class="form-control">
+              </div>
+            </div>
+      
+            <div class="col-md-2">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">C.P:</span>
+                <input type="number" [(ngModel)]="empleadoaux.cp" formControlName="cp" min="0" maxlength="5"class="form-control">
+              </div>
+            </div>
+          </div>
+      
+      
+          <h4 class="text-left">Datos privados </h4>
+      
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Salario:</span>
+                <input type="number" [(ngModel)]="empleadoaux.salario" formControlName="salario" min="0" maxlength="30" class="form-control">
+              </div>
+            </div>
+             <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Correo:</span>
+                <input type="email" [(ngModel)]="empleadoaux.correo" formControlName="correo" maxlength="90" class="form-control">
+              </div>
+            </div>
+      
+            <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Contraseña:</span>
+                <input type="text" [(ngModel)]="empleadoaux.contrasena" formControlName="contrasena"  maxlength="50"class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Estado:</span>
+                <select class="browser-default custom-select" [(ngModel)]="validoaux" formControlName="valido">
+                  <option [ngValue]="null" disabled> Elige estado.. </option>
+                  <option *ngFor="let EstadoEmp of EstadosEmp" [ngValue]="EstadoEmp">{{EstadoEmp}}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+      
+          <button type="submit" [disabled]="empleadoForm.invalid" class="btn btn-outline-secondary" >Guardar cambios</button>
+        </form>
+       
+      </ng-container>
+      
 </div>
 
 
 
-<app-empleado-registrados></app-empleado-registrados>

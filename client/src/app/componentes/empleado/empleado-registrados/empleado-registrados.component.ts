@@ -15,8 +15,8 @@ import { EmpleadoService } from 'src/app/servicios/empleado.service';
 export class EmpleadoRegistradosComponent implements OnInit {
   empleados: any = [];
   titulos: any[] = [{"name": "id"},{"name": "nombre"},{ "name": "apellidos"},
-    {"name": "fecha"},{"name": "domicilio"},{"name": "cp"}
-    ,{"name": "salario"},{"name": "telefono"},{"name": "correo"}];
+  {"name": "fecha"},{"name": "domicilio"}
+  ,{"name": "salario"},{"name": "telefono"},{"name": "correo"},{"name": "puesto"}];
 
   //Variables de la busqueda
   public nombre:string;
@@ -67,12 +67,16 @@ export class EmpleadoRegistradosComponent implements OnInit {
       this.cargo = 'e';
     }else if(this.cargo == 'General'){
       this.cargo = 'n'
-    }
-      console.log(this.cargo);
-      
-    return this.empleadoService.postBusquedaEmpleado(this.nombre,this.cargo);
+    }      
+    return this.empleadoService.postBusquedaEmpleado(this.nombre,this.cargo).subscribe((resp:any) => {
+      this.empleados = resp["info"][0];
+      this.toastr.info("Empleado encontrado.","Listo");  
+       
+  }, (error:any)=>{
+    this.empleados = null;
+    this.toastr.error("No se encontrado, verifica los datos","Error");  
+  });
     
   }
-
 
 }

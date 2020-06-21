@@ -48,6 +48,7 @@ export class EmpleadoRegistroComponent implements OnInit {
 
 
    async postEmpleado(){
+
     try {
       if (!this.empleadoForm.invalid) {
         
@@ -56,7 +57,7 @@ export class EmpleadoRegistroComponent implements OnInit {
         }else if(this.Empleado.cargo == "General"){
           this.Empleado.cargo = 'n';
         }
-         
+     
         await this.empleadoService.postRegistroCliente(this.Empleado);
         
       }
