@@ -12,8 +12,14 @@ import { EmpleadoRegistradosComponent } from './componentes/empleado/empleado-re
 import { EmpleadoModificarComponent } from './componentes/empleado/empleado-modificar/empleado-modificar.component';
 import { PedidoRegistradosComponent } from './componentes/pedido/pedido-registrados/pedido-registrados.component';
 import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/pedido-registrar.component';
+import { PedidoModificarComponent } from './componentes/pedido/pedido-modificar/pedido-modificar.component';
 import { PiezaRegistrarComponent} from './componentes/pieza/pieza-registrar/pieza-registrar.component';
 import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
+import { PiezaModificaComponent } from './componentes/pieza/pieza-modifica/pieza-modifica.component';
+import { ClienteRegistrarComponent  } from './componentes/cliente/cliente-registrar/cliente-registrar.component';
+import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
+import { ClienteModificarComponent  } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
+//import {  } from './componentes';
 
 //Rutas protegidas para encargado: 
 
@@ -35,8 +41,16 @@ const routes: Routes = [
 
       { path: "pedido/registro", component: PedidoRegistrarComponent},
       { path: "pedido/registrados", component: PedidoRegistradosComponent}, 
+      { path: "pedido/modificar", component: PedidoModificarComponent}, 
+
       { path: "pieza/registro", component: PiezaRegistrarComponent},
-      { path: "pieza/registrados", component: PiezaRegistradosComponent}
+      { path: "pieza/registrados", component: PiezaRegistradosComponent},
+      { path: "pieza/modificar", component: PiezaModificaComponent},
+
+      { path: "cliente/registro", component: ClienteRegistrarComponent},
+      { path: "cliente/registrados", component: ClienteRegistradosComponent},
+      { path: "cliente/modificar", component: ClienteModificarComponent}
+
     ]}
    
 ];

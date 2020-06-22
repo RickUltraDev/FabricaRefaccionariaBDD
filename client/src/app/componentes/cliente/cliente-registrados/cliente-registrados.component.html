@@ -1,0 +1,44 @@
+<div class="container pt-5 mb-5">
+
+    <form novalidate [formGroup]="formval" (ngSubmit)="busquedaEmpleado();" class="mb-4">
+     <h4 class="text-left">Clientes registrados</h4>
+      <div class="row mb-2">
+        
+        <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Nombre: </span>
+              <input type="text"  [(ngModel)]="nombre" formControlName="nombre" maxlength="60" class="form-control">
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="input-group">
+              <button type="submit" [disabled]="formval.invalid" class="btn btn-outline-secondary">Buscar</button>
+            </div>
+          </div>
+        </div>
+       </form>  
+
+       <table  class="table table-bordered table-hover table-md-responsive">
+        <thead class="thead-dark">
+          <tr class="text-uppercase text-center">
+            <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+            <th *ngIf="usuarioLog.cargo == 'e'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let  cliente of clientes;let indice as i" class="text-center">
+           <ng-container *ngIf="cliente.valido != 0">
+            <th scope="row">{{cliente.idCliente}}</th>
+            <td>{{cliente.razon_social}}</td>
+            <td>{{cliente.correo}}</td>
+            <td>{{cliente.calle}} {{cliente.numero}}</td>
+            <td>{{cliente.estado}}</td>
+            <td>{{cliente.telefono}}</td>
+            <td *ngIf="usuarioLog.cargo == 'e'"><button type="button" class="btn btn-outline-danger btn-sm"  (click)="eliminarCliente(cliente.idCliente)">Eliminar</button></td>
+          </ng-container>
+          </tr>
+        </tbody>
+      </table>
+
+ </div>       

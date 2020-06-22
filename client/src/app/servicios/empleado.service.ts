@@ -59,9 +59,7 @@ postBusquedaEmpleado(nombreCom:string, cargo:string){
   var apellido_paterno = divisiones[1];
   var apellido_materno = divisiones[2];
   return this.http
-  .post<any>(environment.apiUlrl + "/empleados/busqueda", JSON.stringify({nombre, apellido_paterno, apellido_materno, cargo}),this.httpOptions);
-
-  
+  .post<any>(environment.apiUlrl + "/empleados/busqueda", JSON.stringify({nombre, apellido_paterno, apellido_materno, cargo}),this.httpOptions); 
 }
 
  //Cambios de un empleado

@@ -28,7 +28,7 @@ export class AuthService {
         //Guardamos el token en la session del navegador
         sessionStorage.setItem('token', resp.token);
         this.toastr.success("Bienvenido ","Sesion iniciada con éxito");  
-        this.router.navigate(["navigation"]);
+        this.router.navigate(["navigation/pedido/registrados"]);
       
     }, (error:any)=>{
       this.toastr.error("Los datos ingresados son incorrectos, verificalos.","Error");  

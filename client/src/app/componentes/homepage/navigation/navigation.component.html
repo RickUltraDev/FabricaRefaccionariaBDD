@@ -23,7 +23,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo clientes</h6>
-                      <a class="dropdown-item" href="#">Consulta clientes</a>
+                      <a class="dropdown-item" routerLink="cliente/registrados">Consulta clientes</a>
                     </div>
                   </li>
                  
@@ -34,12 +34,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo envios</h6>
-                      <a class="dropdown-item" href="#">Nuevo envio</a>
+                      <a class="dropdown-item" routerLink="/">Nuevo envio</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Baja envio</a>
-                      <a class="dropdown-item" href="#">Cambios a envios</a>
-                      <a class="dropdown-item" href="#">Proceso envio </a>
-                      <a class="dropdown-item" href="#">Consulta envios</a>
+                      <a class="dropdown-item" routerLink="/">Baja envio</a>
+                      <a class="dropdown-item" routerLink="/">Cambios a envios</a>
+                      <a class="dropdown-item" routerLink="/">Proceso envio </a>
+                      <a class="dropdown-item" routerLink="/">Consulta envios</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -48,10 +48,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo facturas</h6>
-                      <a class="dropdown-item" href="#">Nueva factura</a>
+                      <a class="dropdown-item" routerLink="/">Nueva factura</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Consulta una factura</a>
-                      <a class="dropdown-item" href="#">Consultas facturas</a>
+                      <a class="dropdown-item" routerLink="/">Consulta una factura</a>
+                      <a class="dropdown-item" routerLink="/">Consultas facturas</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -61,10 +61,10 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo pagos</h6>
                       <!--En esta ruta tendrá pagos a credito y de contado  -->
-                      <a class="dropdown-item" href="#">Consulta pagos</a>
+                      <a class="dropdown-item" routerLink="/">Consulta pagos</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Actualiza pago</a>
-                      <a class="dropdown-item" href="#">Abonos a pedido</a>
+                      <a class="dropdown-item" routerLink="/">Actualiza pago</a>
+                      <a class="dropdown-item" routerLink="/">Abonos a pedido</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -73,10 +73,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo pedidos</h6>
-                      <a class="dropdown-item" href="#">Nuevo pedido</a>
+                      <a class="dropdown-item" routerLink="pedido/registro">Nuevo pedido</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Consulta pedidos</a>
-                      <a class="dropdown-item" href="#">Consulta No surtidos</a>
+                      <a class="dropdown-item" routerLink="pedido/registrados">Consulta pedidos</a>
+                      <a class="dropdown-item" routerLink="/">Consulta No surtidos</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -85,8 +85,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo piezas</h6>
-                      <a class="dropdown-item" href="#">Consulta piezas</a>
-                      <a class="dropdown-item" href="#">Consulta una pieza</a>
+                      <a class="dropdown-item" routerLink="pieza/registrados">Consultas piezas</a>
                     </div>
                   </li>
             </ul>
@@ -114,11 +113,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo clientes</h6>
-                      <a class="dropdown-item" href="#">Nuevo cliente</a>
+                      <a class="dropdown-item" routerLink="cliente/registro">Nuevo cliente</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Baja cliente</a>
-                      <a class="dropdown-item" href="#">Cambio cliente</a>
-                      <a class="dropdown-item" href="#">Consulta clientes</a>
+                      <a class="dropdown-item" routerLink="cliente/modificar">Cambio cliente</a>
+                      <a class="dropdown-item" routerLink="cliente/registrados">Consulta clientes</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -128,7 +126,7 @@
                     <div class="dropdown-menu" >
                       <h6 class="dropdown-header">Manejo empleados</h6>
                       <a class="dropdown-item" routerLink="empleado/registro">Nuevo empleado</a>
-                      <a class="dropdown-item"  routerLink="empleado/modificar">Cambios empleado</a>
+                      <a class="dropdown-item" routerLink="empleado/modificar">Cambios empleado</a>
                       <a class="dropdown-item" routerLink="empleado/registrados">Consulta empleados</a>
                     </div>
                   </li>
@@ -139,12 +137,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo envios</h6>
-                      <a class="dropdown-item" href="#">Nuevo envio</a>
+                      <a class="dropdown-item" routerLink="/">Nuevo envio</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Baja envio</a>
-                      <a class="dropdown-item" href="#">Cambios a envios</a>
-                      <a class="dropdown-item" href="#">Proceso envio </a>
-                      <a class="dropdown-item" href="#">Consulta envios</a>
+                      <a class="dropdown-item" routerLink="/">Baja envio</a>
+                      <a class="dropdown-item" routerLink="/">Cambios a envios</a>
+                      <a class="dropdown-item" routerLink="/">Proceso envio </a>
+                      <a class="dropdown-item" routerLink="/">Consulta envios</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -153,10 +151,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo facturas</h6>
-                      <a class="dropdown-item" href="#">Nueva factura</a>
+                      <a class="dropdown-item" routerLink="/">Nueva factura</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Consulta una factura</a>
-                      <a class="dropdown-item" href="#">Consultas facturas</a>
+                      <a class="dropdown-item" routerLink="/">Consulta una factura</a>
+                      <a class="dropdown-item" routerLink="/">Consultas facturas</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -166,10 +164,10 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo pagos</h6>
                       <!--En esta ruta tendrá pagos a credito y de contado  -->
-                      <a class="dropdown-item" href="#">Consulta pagos</a>
+                      <a class="dropdown-item" routerLink="/">Consulta pagos</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Actualiza pago</a>
-                      <a class="dropdown-item" href="#">Abonos a pedido</a>
+                      <a class="dropdown-item" routerLink="/">Actualiza pago</a>
+                      <a class="dropdown-item" routerLink="/">Abonos a pedido</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -178,12 +176,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo pedidos</h6>
-                      <a class="dropdown-item" href="#">Nuevo pedido</a>
+                      <a class="dropdown-item" routerLink="pedido/registro">Nuevo pedido</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Baja pedido</a>
-                      <a class="dropdown-item" href="#">Actualiza un pedido</a>
-                      <a class="dropdown-item" href="#">Consulta pedidos</a>
-                      <a class="dropdown-item" href="#">Consulta No surtidos</a>
+                      <a class="dropdown-item" routerLink="/">Baja pedido</a>
+                      <a class="dropdown-item" routerLink="pedido/modificar">Actualiza un pedido</a>
+                      <a class="dropdown-item" routerLink="pedido/registrados">Consulta pedidos</a>
+                      <a class="dropdown-item" routerLink="/">Consulta No surtidos</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -192,13 +190,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <h6 class="dropdown-header">Manejo piezas</h6>
-                      <a class="dropdown-item" href="#">Nueva pieza</a>
+                      <a class="dropdown-item" routerLink="pieza/registro">Nueva pieza</a>
                       <!--<div class="dropdown-divider"></div>-->
-                      <a class="dropdown-item" href="#">Baja pieza</a>
-                      <a class="dropdown-item" href="#">Actualiza una pieza</a>
-                      <a class="dropdown-item" href="#">Actualiza piezas</a>
-                      <a class="dropdown-item" href="#">Consulta piezas</a>
-                      <a class="dropdown-item" href="#">Consulta una pieza</a>
+                      <a class="dropdown-item" routerLink="pieza/modificar">Actualiza piezas</a>
+                      <a class="dropdown-item" routerLink="pieza/registrados">Consultas piezas</a>
                     </div>
                   </li>
             </ul>

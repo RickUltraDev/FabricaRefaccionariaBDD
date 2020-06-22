@@ -10,11 +10,7 @@ import { AuthService } from "../../../servicios/auth.service";
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-   usuarioLog = {
-     id: '',
-     nombre: '',
-     cargo: '',
-   };
+  usuarioLog = {id: '',nombre: '',cargo: '',};
 
   constructor(
     private router: Router,

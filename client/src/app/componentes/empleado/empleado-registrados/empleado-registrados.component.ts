@@ -74,7 +74,7 @@ export class EmpleadoRegistradosComponent implements OnInit {
        
   }, (error:any)=>{
     this.empleados = null;
-    this.toastr.error("No se encontrado, verifica los datos","Error");  
+    this.toastr.error("No se ha encontrado, verifica los datos","Error");  
   });
     
   }

@@ -28,7 +28,7 @@ var dbpool = require('../database');
     }
 
     //Aqui se verifica el token y se saca la información que tiene (payload)
-    const payload = jwt.verify(token, 'secretkey')
+    const payload = jwt.verify(token, 'secretkey');
     //En req se creará una propiedad de req que tenga el usuario logeado
     req.user = payload.user;
     
@@ -84,7 +84,8 @@ router.post("/api/empleados/login", async (req, res) => {
                   
                   if (datos.recordsets[0].length == 1) {
                     respEmpleado = datos.recordsets[0][0];
-                    const token = jwt.sign({user:respEmpleado}, 'secretkey', { expiresIn: '2h' });               
+                    //expiresIn: '2h'
+                    const token = jwt.sign({user:respEmpleado}, 'secretkey', {});               
                     res.status(200).send({token: token, user: respEmpleado});
                   }else{
                     res.status(404).send({token: null});
@@ -116,7 +117,7 @@ router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
 //-----------------------------------FUNCIONES BÁSICAS DEL API----------------------------------
 
 //Regresa todos los empleados registrados validos
-router.get("/api/empleados", async (req, res) => {
+router.get("/api/empleados",  verifyToken, async (req, res) => {
     try {
       let QueryReal = "SELECT * FROM empleadofabrica";
       dbpool.query(QueryReal, (err, resultados)=>{
@@ -134,7 +135,7 @@ router.get("/api/empleados", async (req, res) => {
 });
 
 //El registro de empleados
-router.post("/api/empleados/registro",  (req, res) => {
+router.post("/api/empleados/registro",  verifyToken,  (req, res) => {
   let {nombre, apellido_paterno, apellido_materno, fecha_nacimiento, calle, numero,
      cp, telefono, cargo, salario, correo, contrasena} = req.body;
   const transaction = new sql.Transaction(dbpool)
@@ -190,7 +191,7 @@ router.post("/api/empleados/registro",  (req, res) => {
 });
   
 //Dar de baja lógica a un respEmpleado
-router.delete("/api/empleados/elimina/:idEmpleado", (req, res) => {
+router.delete("/api/empleados/elimina/:idEmpleado", verifyToken, (req, res) => {
      //id a eliminar
   const { idEmpleado } =  req.params;
   const transaction = new sql.Transaction(dbpool)
@@ -243,7 +244,7 @@ router.delete("/api/empleados/elimina/:idEmpleado", (req, res) => {
 });
   
 //Actualiza los atributos que se quiera de un respEmpleado
-router.put("/api/empleados/actualiza/:idEmpleado", async (req, res) => {
+router.put("/api/empleados/actualiza/:idEmpleado", verifyToken, async (req, res) => {
 
     const { idEmpleado } =  req.params;
     let {nombre, apellido_paterno, apellido_materno, fecha_nacimiento, calle, numero,
@@ -397,12 +398,10 @@ router.post("/api/empleados/busqueda",  (req, res) => {
           // emited with aborted === true
           rolledBack = true
       })
-
-      console.log(req.body);
       
             
       let QueryReal = "SELECT * FROM empleadofabrica"+
-      " WHERE cargo = '"+cargo+"' AND nombre LIKE '"+nombre+"%' OR apellido_materno LIKE '"+apellido_materno+
+      " WHERE cargo = '"+cargo+"' AND nombre LIKE '%"+nombre+"%' OR apellido_materno LIKE '"+apellido_materno+
       "%' OR apellido_paterno LIKE '"+apellido_paterno+"%';";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {

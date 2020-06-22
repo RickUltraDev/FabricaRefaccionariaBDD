@@ -27,7 +27,7 @@ router.get("/api/piezas", async (req, res) => {
 
 //Registra una piezas valida
 router.post("/api/piezas/registro", async (req, res) => {
-  let {nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria} = req.body;
+  let {nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, url} = req.body;
   const transaction = new sql.Transaction(dbpool)
   
   transaction.begin(err => {
@@ -43,8 +43,8 @@ router.post("/api/piezas/registro", async (req, res) => {
           rolledBack = true
       })
       
-      let QueryReal = "INSERT INTO pieza (nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, valido) VALUES "+
-      "('"+nombre+"','"+descripcion+"',"+precio_fabricacion+","+precio_venta+","+existencia+",'"+categoria+"',1);";
+      let QueryReal = "INSERT INTO pieza (nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, valido, url) VALUES "+
+      "('"+nombre+"','"+descripcion+"',"+precio_fabricacion+","+precio_venta+","+existencia+",'"+categoria+"','"+url+"',1);";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -76,6 +76,7 @@ router.post("/api/piezas/registro", async (req, res) => {
       })
     }})   
 });
+
 
 //Dar de baja lógica a una pieza
  router.delete("/api/piezas/elimina/:idPieza", async (req, res) => {
@@ -258,6 +259,70 @@ router.get("/api/piezas/:idPieza", async (req, res) => {
     console.log(error);
   }
 });
+
+
+//Busqueda de una pieza
+router.post("/api/piezas/busqueda",  (req, res) => {
+  let {nombre,categoria} = req.body;
+
+  const transaction = new sql.Transaction(dbpool)
   
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })     
+            
+      let QueryReal = "SELECT * FROM pieza"+
+      " WHERE categoria = '"+categoria+"' AND nombre LIKE '%"+nombre+"%';";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                
+
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets});
+                    
+                  }
+                  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
 
 module.exports = router;

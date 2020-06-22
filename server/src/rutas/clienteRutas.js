@@ -193,5 +193,69 @@ router.put("/api/clientes/actualiza/:idCliente", async (req, res) => {
 });
 
 
+//Busqueda de un empleado
+router.post("/api/clientes/busqueda",  (req, res) => {
+  let {razon_social} = req.body;
+
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      });
+                  
+      let QueryReal = "SELECT * FROM clientefabrica"+
+      " WHERE razon_social LIKE '%"+razon_social+"%';";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                
+
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets});
+                    
+                  }
+                  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
+
 
 module.exports = router;

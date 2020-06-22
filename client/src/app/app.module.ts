@@ -34,6 +34,11 @@ import { PedidoRegistradosComponent } from './componentes/pedido/pedido-registra
 import { PedidoRegistrarComponent } from './componentes/pedido/pedido-registrar/pedido-registrar.component';
 import { PiezaRegistrarComponent } from './componentes/pieza/pieza-registrar/pieza-registrar.component';
 import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
+import { PedidoModificarComponent } from './componentes/pedido/pedido-modificar/pedido-modificar.component';
+import { PiezaModificaComponent } from './componentes/pieza/pieza-modifica/pieza-modifica.component';
+import { ClienteRegistrarComponent } from './componentes/cliente/cliente-registrar/cliente-registrar.component';
+import { ClienteModificarComponent } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
+import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 
 
 
@@ -48,7 +53,12 @@ import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados
     PedidoRegistradosComponent,
     PedidoRegistrarComponent,
     PiezaRegistrarComponent,
-    PiezaRegistradosComponent
+    PiezaRegistradosComponent,
+    PedidoModificarComponent,
+    PiezaModificaComponent,
+    ClienteRegistrarComponent,
+    ClienteModificarComponent,
+    ClienteRegistradosComponent
   ],
   imports: [
     BrowserModule,

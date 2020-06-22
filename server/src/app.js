@@ -28,6 +28,10 @@ app.get("/", async (req, res) => {
   res.json({ Mensaje: "Bienvenido" });
 });
 
+app.post("/api/piezas/upload", async (req, res) => {
+
+});
+
 
 /* Rutas para las conexiones */
 app.use(require("./rutas/clienteRutas"));

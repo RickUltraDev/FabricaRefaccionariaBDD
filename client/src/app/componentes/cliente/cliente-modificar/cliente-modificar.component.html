@@ -1,0 +1,130 @@
+<div class="container pt-5 mb-5">
+
+    <form novalidate [formGroup]="formval" (ngSubmit)="busquedaEmpleado();" class="mb-4">
+     <h4 class="text-left">Clientes registrados</h4>
+      <div class="row mb-2">
+        
+        <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Nombre: </span>
+              <input type="text"  [(ngModel)]="nombre" formControlName="nombre" maxlength="60" class="form-control">
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="input-group">
+              <button type="submit" [disabled]="formval.invalid" class="btn btn-outline-secondary">Buscar</button>
+            </div>
+          </div>
+        </div>
+       </form>  
+
+       <table  class="table table-bordered table-hover table-md-responsive">
+        <thead class="thead-dark">
+          <tr class="text-uppercase text-center">
+            <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let  cliente of clientes;let indice as i" class="text-center">
+           <ng-container *ngIf="cliente.valido != 0">
+            <th scope="row">{{cliente.idCliente}}</th>
+            <td>{{cliente.razon_social}}</td>
+            <td>{{cliente.correo}}</td>
+            <td>{{cliente.calle}} {{cliente.numero}}</td>
+            <td>{{cliente.estado}}</td>
+            <td>{{cliente.telefono}}</td>
+            <td ><button type="button" class="btn btn-outline-warning btn-sm" (click)="toggleModficar(cliente);" >Modificar</button></td>
+          </ng-container>
+          </tr>
+        </tbody>
+      </table>
+      
+      <ng-container  *ngIf="buttonModifica == true">
+        <form novalidate  [formGroup]="formval2" (ngSubmit)="postClienteModifica();">
+            <h4 class="text-left">Datos de la sucursal</h4>
+        
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Razon social:</span>
+                  <input type="text" [(ngModel)]="clienteaux.razon_social" formControlName="razon_social" maxlength="45" class="form-control">
+                </div>
+              </div>
+        
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Correo:</span>
+                  <input type="email" [(ngModel)]="clienteaux.correo" formControlName="correo" maxlength="90" class="form-control">
+                </div>
+              </div>
+             </div>
+        
+            <h4 class="text-left">Referencias </h4>
+        
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Calle:</span>
+                  <input type="text" [(ngModel)]="clienteaux.calle" formControlName="calle"  maxlength="50" class="form-control">
+                </div>
+              </div>
+               <div class="col-md-3">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Numero:</span>
+                  <input type="number" [(ngModel)]="clienteaux.numero" formControlName="numero" min="0" maxlength="9"class="form-control">
+                </div>
+              </div>
+        
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">C.P:</span>
+                  <input type="number" [(ngModel)]="clienteaux.cp" formControlName="cp" min="0" maxlength="5"class="form-control">
+                </div>
+              </div>
+            
+            </div>
+        
+                
+            <div class="row mb-4">
+
+                <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Ciudad:</span>
+                      <input type="text" [(ngModel)]="clienteaux.ciudad" formControlName="ciudad" maxlength="50" class="form-control">
+                    </div>
+                  </div>
+                
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Ubicación:</span>
+                      <select class="browser-default custom-select" [(ngModel)]="clienteaux.estado" formControlName="estado">
+                        <option [ngValue]="null" disabled> Elige un estado.. </option>
+                        <option *ngFor="let Estado of Estados" [ngValue]="Estado">{{Estado}}</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Telefono:</span>
+                      <input type="number" [(ngModel)]="clienteaux.telefono" formControlName="telefono" min="0" maxlength="10" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Estado:</span>
+                      <select class="browser-default custom-select" [(ngModel)]="validoaux" formControlName="valido">
+                        <option [ngValue]="null" disabled> Elige estado.. </option>
+                        <option *ngFor="let EstadoCli of EstadosCli" [ngValue]="EstadoCli">{{EstadoCli}}</option>
+                      </select>
+                    </div>
+                  </div>
+            </div>
+            <button type="submit" [disabled]="formval2.invalid" class="btn btn-outline-secondary">Guardar cambios</button>
+        </form>
+      </ng-container>
+    
+ </div>    

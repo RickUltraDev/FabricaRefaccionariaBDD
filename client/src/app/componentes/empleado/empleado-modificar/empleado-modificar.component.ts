@@ -30,6 +30,7 @@ export class EmpleadoModificarComponent implements OnInit {
   //Variables para cambio
   buttonModifica:boolean =  false;
   empleadoaux:any;
+  
   public Empleado: ModelEmpleado;
   empleadoForm: FormGroup;
   EstadosEmp = ["Dar de alta", "Dar de baja"];
