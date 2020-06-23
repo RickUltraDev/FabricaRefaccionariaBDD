@@ -40,7 +40,7 @@
             <tr *ngFor="let pieza of piezas;let indice as i" class="text-center">
              <ng-container *ngIf="pieza.valido != 0">
               <th scope="row">{{pieza.idPieza}}</th>
-              <td>{{pieza.url}}</td>
+              <td><img src='{{ pieza.url}}' width="40px" height="30px" class="img-responsive"></td>
               <td>{{pieza.nombre}}</td>
               <td *ngIf="pieza.categoria == 'ae'">Accesorio Externo</td>
               <td *ngIf="pieza.categoria == 'ai'">Accesorio Interno</td>

@@ -15,6 +15,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+
 /*Guards  de las rutas */
 import {AuthGuard} from './guards/auth.guard';
 
@@ -39,6 +40,7 @@ import { PiezaModificaComponent } from './componentes/pieza/pieza-modifica/pieza
 import { ClienteRegistrarComponent } from './componentes/cliente/cliente-registrar/cliente-registrar.component';
 import { ClienteModificarComponent } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
+import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-imagen.component';
 
 
 
@@ -58,7 +60,8 @@ import { ClienteRegistradosComponent } from './componentes/cliente/cliente-regis
     PiezaModificaComponent,
     ClienteRegistrarComponent,
     ClienteModificarComponent,
-    ClienteRegistradosComponent
+    ClienteRegistradosComponent,
+    PiezaImagenComponent
   ],
   imports: [
     BrowserModule,

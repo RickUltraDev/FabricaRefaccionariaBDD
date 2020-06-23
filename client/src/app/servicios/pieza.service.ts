@@ -23,6 +23,18 @@ export class PiezaService {
    })
  };
 
+
+ postRegistroPieza(modelPieza: ModelPieza) {
+
+  return this.http
+    .post<ModelPieza>(environment.apiUlrl + "/piezas/registro", JSON.stringify(modelPieza),this.httpOptions).subscribe((resp: {}) => {
+      this.toastr.success("Registro exitoso ","Mostrando nueva pieza");  
+      this.router.navigate(["navigation/pieza/registrados"]);
+    }, (error:any)=>{
+      this.toastr.error("Los datos ingresados son incorrectos, verificalos.","Error");  
+    });
+}
+
   //Obtenter todas las piezas
 getPiezas(): Observable<ModelPieza> {
     return this.http
@@ -41,6 +53,15 @@ postBusquedaPieza(nombre:string, categoria:string){
   return this.http
   .post<any>(environment.apiUlrl + "/piezas/busqueda", JSON.stringify({nombre,categoria}),this.httpOptions); 
 }
+ 
+//Ruta para subir imagenes
+postImagenPieza(file: FormData, idPieza:number){
+  return this.http
+  .post<any>(environment.apiUlrl + "/piezas/subir/"+idPieza, file);
+  
+}
+
+
 
 
 handleError(error) {

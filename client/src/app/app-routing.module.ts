@@ -16,6 +16,8 @@ import { PedidoModificarComponent } from './componentes/pedido/pedido-modificar/
 import { PiezaRegistrarComponent} from './componentes/pieza/pieza-registrar/pieza-registrar.component';
 import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
 import { PiezaModificaComponent } from './componentes/pieza/pieza-modifica/pieza-modifica.component';
+import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-imagen.component';
+
 import { ClienteRegistrarComponent  } from './componentes/cliente/cliente-registrar/cliente-registrar.component';
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 import { ClienteModificarComponent  } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
@@ -46,6 +48,7 @@ const routes: Routes = [
       { path: "pieza/registro", component: PiezaRegistrarComponent},
       { path: "pieza/registrados", component: PiezaRegistradosComponent},
       { path: "pieza/modificar", component: PiezaModificaComponent},
+      { path: "pieza/modificar/imagen", component: PiezaImagenComponent},
 
       { path: "cliente/registro", component: ClienteRegistrarComponent},
       { path: "cliente/registrados", component: ClienteRegistradosComponent},

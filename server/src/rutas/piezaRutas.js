@@ -1,9 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const sql = require("mssql/msnodesqlv8");
+const path= require('path');
+const multer = require('multer');
 
 /* Conexión con BD*/
 var dbpool = require('../database');
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../public/images'),
+    filename: (req, file, cb)=>{
+         req.nomarchivo = Date.now()+ '.' +file.mimetype.split('/')[1];
+         
+        cb(null, Date.now()+ '.' +file.mimetype.split('/')[1]);
+    } 
+});
+
+const upload = multer({ storage: storage });
+
+
+
 
 //Regresa todas la piezas validas registradas
 router.get("/api/piezas", async (req, res) => {
@@ -23,12 +39,72 @@ router.get("/api/piezas", async (req, res) => {
     console.log(error);
   }
 });
+ 
+
+//Subir imagen
+router.post("/api/piezas/subir/:idPieza" , upload.single('file') , async (req, res) => {  
   
+     const { idPieza } = req.params;
+     var nombreArch = 'http://localhost:3000/images/'+req.nomarchivo;
+     
+     const transaction = new sql.Transaction(dbpool)
+  
+     transaction.begin(err => {
+          if(err){
+           console.log("Error: "+err);
+           throw err;
+            //Failed
+          }else{
+         let rolledBack = false
+      
+         transaction.on('rollback', aborted => {
+             // emited with aborted === true
+             rolledBack = true
+         })
+   
+         let QueryReal = "UPDATE pieza SET url = '"+nombreArch+"' WHERE idPieza = "+idPieza+";";
+   
+         new sql.Request(transaction).query(QueryReal, (err,datos) => {
+             // insert should fail because of invalid value
+             if (err) {
+               console.log("Error: "+err);
+                 if (!rolledBack) {
+                     transaction.rollback(err => {
+                        if(err){
+                         console.log("Error: "+err);
+                         throw err;    
+                         //Failed
+                        }else{
+                          res.status(400).send({info: "Eliminacion no realizada"});
+                        }
+                     })
+                 }
+             } else {
+                 transaction.commit(err => {
+                   if(err){
+                     console.log("Error: "+err);
+                     throw err;
+                     //Failed
+                    }else{
+                     res.status(200).send({info: "Eliminacion exitosa"});
+                     //Success
+                    } 
+                 })
+             }//fin else
+         })
+       }}) 
+     
+     
+ 
+}); 
+
 
 //Registra una piezas valida
 router.post("/api/piezas/registro", async (req, res) => {
-  let {nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, url} = req.body;
+   
+ let {nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, url} = req.body;
   const transaction = new sql.Transaction(dbpool)
+   req.body.url = 0
   
   transaction.begin(err => {
        if(err){
@@ -44,7 +120,7 @@ router.post("/api/piezas/registro", async (req, res) => {
       })
       
       let QueryReal = "INSERT INTO pieza (nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, valido, url) VALUES "+
-      "('"+nombre+"','"+descripcion+"',"+precio_fabricacion+","+precio_venta+","+existencia+",'"+categoria+"','"+url+"',1);";
+      "('"+nombre+"','"+descripcion+"',"+precio_fabricacion+","+precio_venta+","+existencia+",'"+categoria+"',1,'"+url+"');";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -74,7 +150,7 @@ router.post("/api/piezas/registro", async (req, res) => {
               })
           }//fin else
       })
-    }})   
+    }})
 });
 
 

@@ -1,7 +1,7 @@
 /*Imports necesarios*/
-
 const express = require("express");
 const morgan = require("morgan");
+const path= require('path');
 const cors = require("cors");
 const router = express.Router();
 
@@ -11,25 +11,20 @@ const router = express.Router();
 var app = express();
 app.use(morgan("dev"));
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+ //Cross origin resourse sharing esto es para compartir información entre difs. dominios
+ app.use(cors({origin: ["http://localhost:4200",],credentials: true}));
+//Es para subir archivos de imagenes
+
 
 app.use(morgan("dev")); //Este middleware sirve para ver el estatus de los req
 
- //Cross origin resourse sharing esto es para compartir información entre difs. dominios
-app.use(cors({origin: ["http://localhost:4200",],credentials: true}));
-
 app.use(express.json()); //Es para se convertir los body.req a json, tambien podría ser usado body-parse.json
 app.use(express.urlencoded({ extended: false }));
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 /* Conexiones de prueba*/
 app.get("/", async (req, res) => {
   res.json({ Mensaje: "Bienvenido" });
-});
-
-app.post("/api/piezas/upload", async (req, res) => {
-
 });
 
 

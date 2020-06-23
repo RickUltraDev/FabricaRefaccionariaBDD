@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+
+import { Router } from "@angular/router"; //Para redireccionar a otra ruta si es que se necesita
+import { FormGroup, FormBuilder, Validators } from "@angular/forms"; //Para validar los formularios
+
+import { PiezaService } from 'src/app/servicios/pieza.service';
 
 @Component({
   selector: 'app-pieza-modifica',
@@ -7,9 +12,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PiezaModificaComponent implements OnInit {
 
-  constructor() { }
+   
+  constructor(
+    private builder: FormBuilder,
+    private router: Router,
+    private piezaService: PiezaService
+  ) { }
 
   ngOnInit(): void {
   }
+
+  
 
 }

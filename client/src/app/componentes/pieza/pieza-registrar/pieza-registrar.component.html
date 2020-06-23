@@ -1,1 +1,73 @@
-<p>pieza-registrar works!</p>
+<div class="container pt-5">
+
+
+  <form novalidate [formGroup]="formval" (ngSubmit)="postPieza();" enctype="multipart/form-data">
+    <h4 class="text-left">Datos de la pieza</h4>
+
+    <div class="row mb-4">
+
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Nombre:</span>
+          <input type="text" [(ngModel)]="Pieza.nombre" formControlName="nombre" maxlength="60" class="form-control">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Categoria:</span>
+          <select class="browser-default custom-select" [(ngModel)]="Pieza.categoria" formControlName="categoria">
+            <option [ngValue]="null" disabled> Elige puesto.. </option>
+            <option *ngFor="let Categoria of Categorias" [ngValue]="Categoria">{{Categoria}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Existencia:</span>
+          <input type="number" [(ngModel)]="Pieza.existencia" formControlName="existencia" min="0" maxlength="5"
+            class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <h4 class="text-left">Precios </h4>
+
+    <div class="row mb-2">
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Precio Fabr:</span>
+          <input type="number" [(ngModel)]="Pieza.precio_fabricacion" formControlName="precio_fabricacion" min="0"
+            maxlength="9" class="form-control">
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Precio Venta:</span>
+          <input type="number" [(ngModel)]="Pieza.precio_venta" formControlName="precio_venta" min="0" maxlength="9"
+            class="form-control">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Descripcion:</span>
+          <textarea class="form-control" rows="3" cols="100" [(ngModel)]="Pieza.descripcion"
+            formControlName="descripcion" aria-label="With textarea"></textarea>
+        </div>
+      </div>
+    </div>
+
+   
+
+    <button type="submit" [disabled]="formval.invalid" class="btn btn-secondary">Agregar</button>
+  </form>
+
+
+
+</div>
