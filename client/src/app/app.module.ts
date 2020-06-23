@@ -41,6 +41,7 @@ import { ClienteRegistrarComponent } from './componentes/cliente/cliente-registr
 import { ClienteModificarComponent } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-imagen.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -72,6 +73,7 @@ import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-ima
     ToastrModule.forRoot(),
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     FontAwesomeModule,
+    NgbModule,
   ],
   providers: [
     AuthGuard,

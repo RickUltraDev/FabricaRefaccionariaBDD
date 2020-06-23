@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms"; //Para validar los formularios
 
@@ -7,18 +7,27 @@ import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en
 import { AuthService } from "../../../servicios/auth.service";
 import { PedidoService } from 'src/app/servicios/pedido.service';
 
+//Modal service
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+import { ModelPedido } from 'src/app/modelos/ModelPedido';
+
+
+
 @Component({
   selector: 'app-pedido-registrados',
   templateUrl: './pedido-registrados.component.html',
   styleUrls: ['./pedido-registrados.component.css']
 })
 export class PedidoRegistradosComponent implements OnInit {
+  
   usuarioLog = {id: '',nombre: '',cargo: '',};
   pedidos: any = [];
- 
+  detallepedidos:any = [];
+
   titulos: any[] = [{"name": "# pedido"},{"name": "fecha y hora"},{ "name": "id Cliente"},
   { "name": "estatus de pago"},{"name": "estatus de envio"}];
-
+  
+  titulosdetalles: any[] = [{"name": "# pedido"},{"name": "idPieza"},{ "name": "cantidad"}];
 
     //Variables de la busqueda
     public idPedido:number;
@@ -33,12 +42,14 @@ export class PedidoRegistradosComponent implements OnInit {
     //Formulario de busqueda
     formval: FormGroup;
 
+
   constructor(
     private pedidoService: PedidoService,
     private authService: AuthService,
     private router: Router,
     private toastr:ToastrService,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private modalService: NgbModal
   ) {
     this.formval = this.builder.group({
       idPedido: [null],
@@ -46,6 +57,8 @@ export class PedidoRegistradosComponent implements OnInit {
       estatus_pago: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
       fecha: [null]
     });
+
+  
    }
 
   ngOnInit(): void {
@@ -103,7 +116,21 @@ export class PedidoRegistradosComponent implements OnInit {
 
   }
 
+  //Modal 
+  open(contenido, idPedido:number){
+     
 
+    return this.pedidoService.postPedidoDetalles(idPedido).subscribe((resp:any) => {
+      this.detallepedidos = resp["info"][0];
+      console.log(this.detallepedidos);
+      this.modalService.open(contenido, {size: 'lg'}); 
+       
+  }, (error:any)=>{
+    this.detallepedidos = null;
+  });
+    
+   
+  }
 
 
 
