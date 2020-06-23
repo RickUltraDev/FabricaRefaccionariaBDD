@@ -49,54 +49,167 @@ router.get("/api/pedidos", async (req, res) => {
     console.log(error);
   }
 });
+
+//busca los detalles del pedido
+router.post("/api/detallepedidos/busqueda", async (req, res) => {
+  let { idPedido } = req.body;
+  const transaction = new sql.Transaction(dbpool)
   
-//Registra un pedido valido (PENDIENTE)
-router.post("/api/pedidos/registro", async (req, res) => {
-      dbpool.getConnection(function (err, connection) {
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })
+      
+    
+  
+      let QueryReal = "SELECT * FROM detallepedidopieza WHERE idPedido = "+idPedido+" ; ";
 
-          
-        /* Begin transaction */
-        connection.beginTransaction(function (err) {
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
           if (err) {
-            console.log("Error " + err);  
-            connection.rollback(function() {
-                connection.release();
-                //Failure
-            });
-          }else{
-
-          connection.query("INSERT INTO pedidofabrica set ?", [req.body], function (err, result) {
-              if (err) {
-                console.log("Error " + err);
-                connection.rollback(function() {
-                    connection.release();
-                    //Failure
-                });
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: null});
+                     }
+                  })
               }
-             
-                   
-              connection.commit(function (err) {
-                if (err) {
-                    console.log("Error " + err);
-                    connection.rollback(function() {
-                        connection.release();
-                        //Failure
-                    });
-                }else{
-                    
-                    connection.release();
-                    res.json({ message: "Registro creado" });
-                    //Success
-                }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  res.status(200).send({info: resultados.recordsets});
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})      
+});
+  
+//Registra un pedido valido
+router.post("/api/pedidos/registro", async (req, res) => {
+  let { fecha, total_pagar,estatus_surtido, estatus_pago, idCliente } = req.body;
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })
+      
+    
+  
+      let QueryReal = "INSERT INTO pedidofabrica (fecha, total_pagar ,estatus_surtido, estatus_pago, idCliente) VALUES "+
+        " ('"+fecha+"',"+total_pagar+",'"+estatus_surtido+"','"+estatus_pago+"',"+idCliente+"); ";
 
-              });
+      new sql.Request(transaction).query(QueryReal, (err,datos) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  res.status(200).send({info: "Registro exitoso"});
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})      
+});
 
-            }); //fin query
-          }
 
-        });//fin conexión
+//Registra los detalles del pedido valido
+router.post("/api/detallepedidos/registro", async (req, res) => {
+  let { idPedido , idPieza, cantidad} = req.body;
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })
+      
+    
+  
+      let QueryReal = "INSERT INTO detallepedidopieza (idPedido , idPieza, cantidad) VALUES "+
+        " ("+idPedido+","+idPieza+","+cantidad+"); ";
 
-      });
+      new sql.Request(transaction).query(QueryReal, (err,datos) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  res.status(200).send({info: "Registro exitoso"});
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})      
 });
 
 
