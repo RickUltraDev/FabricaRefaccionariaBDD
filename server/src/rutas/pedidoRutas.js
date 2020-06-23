@@ -245,6 +245,72 @@ router.get("/api/pedidos/gasto", async (req, res) => {
 });
 
 
+//Busqueda 
+router.post("/api/pedidos/busqueda",  (req, res) => {
+  let {idPedido, estatus_surtido, estatus_pago,fecha} = req.body;
+
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      });
+      
+
+      let QueryReal = "SELECT * FROM pedidofabrica "+
+      " WHERE CONVERT(VARCHAR(25), fecha, 126) LIKE '"+fecha+"%' OR estatus_surtido LIKE '"+estatus_surtido+
+      "' OR estatus_pago LIKE '"+estatus_pago+"' OR idPedido = "+idPedido+";";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                
+
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets});
+                    
+                  }
+                  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
+
 
 
 

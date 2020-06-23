@@ -193,7 +193,7 @@ router.put("/api/clientes/actualiza/:idCliente", async (req, res) => {
 });
 
 
-//Busqueda de un empleado
+//Busqueda 
 router.post("/api/clientes/busqueda",  (req, res) => {
   let {razon_social} = req.body;
 

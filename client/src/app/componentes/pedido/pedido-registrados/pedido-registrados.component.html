@@ -1,1 +1,80 @@
-<p>pedido-registrados works!</p>
+<div class="container pt-5 mb-5">
+
+  <form novalidate [formGroup]="formval"  (ngSubmit)="busquedaPedido();" class="mb-4">
+    <h4 class="text-left">Pedidos registrados</h4>
+    <div class="row mb-2 pt-3">
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Envio:</span>
+          <select class="browser-default custom-select" [(ngModel)]="estatus_surtido" formControlName="estatus_surtido">
+            <option [ngValue]="null" disabled> Elige categoria.. </option>
+            <option *ngFor="let TipoEnv of TiposEnv" [ngValue]="TipoEnv">{{TipoEnv}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Pago:</span>
+          <select class="browser-default custom-select" [(ngModel)]="estatus_pago" formControlName="estatus_pago">
+            <option [ngValue]="null" disabled> Elige categoria.. </option>
+            <option *ngFor="let TipoPag of TiposPag" [ngValue]="TipoPag">{{TipoPag}}</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mb-2">
+        
+        <div class="col-md-3">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1"># Pedido: </span>
+              <input type="number" [(ngModel)]="idPedido" formControlName="idPedido" min="1" maxlength="10"
+                class="form-control" placeholder="0">
+            </div>
+          </div>
+
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Fecha Pedido: </span>
+          <input type="date" [(ngModel)]="fecha" formControlName="fecha" class="form-control">
+        </div>
+      </div>
+
+
+      <div class="col-md-2 ">
+        <div class="input-group">
+          <button type="submit" [disabled]="formval.invalid" class="btn btn-outline-secondary">Buscar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <table  class="table table-bordered table-hover table-md-responsive">
+    <thead class="thead-dark">
+      <tr class="text-uppercase text-center">
+        <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pedido of pedidos;let indice as i" class="text-center">
+       <ng-container>
+           <!-- // idpedido, fecha y hora, idCliente, Estatus de pago, Estatus de envio(surtido), detalles.-->
+        <th scope="row">{{pedido.idPedido}}</th>
+        <td>{{pedido.fecha | date:'medium'}}</td>
+        <td>{{pedido.idCliente}}</td>
+        <td *ngIf="pedido.estatus_pago == 's'">Pagado</td>
+        <td *ngIf="pedido.estatus_pago == 'n'">No Pagado</td>
+        <td *ngIf="pedido.estatus_surtido == 's'">Surtido</td>
+        <td *ngIf="pedido.estatus_surtido == 'n'">No Surtido</td>
+        <td ><button type="button" class="btn btn-outline-info btn-sm" >Ver detalles</button></td>
+      </ng-container>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+</div>

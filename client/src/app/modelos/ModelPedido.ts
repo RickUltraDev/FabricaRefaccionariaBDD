@@ -1,4 +1,4 @@
-export class ModelPago{   
+export class ModelPedido{   
     public fecha:string;
     public total_pagar:number;
     public estatus_surtido:string;

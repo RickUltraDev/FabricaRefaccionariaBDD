@@ -16,7 +16,7 @@ export class PiezaRegistradosComponent implements OnInit {
   
   usuarioLog = {id: '',nombre: '',cargo: '',};
   piezas: any = [];
-  titulos: any[] = [{"name": "id"},{"name": "nombre"},{ "name": "imagen"},{ "name": "categoria"},
+  titulos: any[] = [{"name": "id"},{ "name": "imagen"} ,{"name": "nombre"},{ "name": "categoria"},
   {"name": "precio fabr"},{"name": "precio venta"},{"name": "existencia"}];
 
    //Variables de la busqueda

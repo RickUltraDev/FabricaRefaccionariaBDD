@@ -40,8 +40,8 @@
             <tr *ngFor="let pieza of piezas;let indice as i" class="text-center">
              <ng-container *ngIf="pieza.valido != 0">
               <th scope="row">{{pieza.idPieza}}</th>
-              <td>{{pieza.nombre}}</td>
               <td>{{pieza.url}}</td>
+              <td>{{pieza.nombre}}</td>
               <td *ngIf="pieza.categoria == 'ae'">Accesorio Externo</td>
               <td *ngIf="pieza.categoria == 'ai'">Accesorio Interno</td>
               <td *ngIf="pieza.categoria == 'he'">Herramientas</td>
