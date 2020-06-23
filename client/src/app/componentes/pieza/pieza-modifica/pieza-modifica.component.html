@@ -1,1 +1,131 @@
+<div class="container pt-5 mb-5">
 
+    <form novalidate [formGroup]="formval" (ngSubmit)="busquedaPieza();" class="mb-4">
+     <h4 class="text-left">Piezas registradas</h4>
+      <div class="row mb-2">
+        
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Categoria:</span>
+            <select class="browser-default custom-select" [(ngModel)]="categoria" formControlName="categoria">
+              <option [ngValue]="null" disabled> Elige categoria.. </option>
+              <option *ngFor="let categoria of Categorias" [ngValue]="categoria">{{categoria}}</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Nombre: </span>
+            <input type="text"  [(ngModel)]="nombre" formControlName="nombre" maxlength="60" class="form-control">
+          </div>
+        </div>
+      
+        <div class="col-md-2">
+          <div class="input-group">
+            <button type="submit" [disabled]="formval.invalid" class="btn btn-outline-secondary">Buscar</button>
+          </div>
+        </div>
+      </div>
+     </form>
+
+      <table  class="table table-bordered table-hover table-md-responsive">
+          <thead class="thead-dark">
+            <tr class="text-uppercase text-center">
+              <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+              <th *ngIf="usuarioLog.cargo == 'e'"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pieza of piezas;let indice as i" class="text-center">
+             <ng-container *ngIf="pieza.valido != 0">
+              <th scope="row">{{pieza.idPieza}}</th>
+              <td><img src='{{ pieza.url}}' width="40px" height="30px" class="img-responsive"></td>
+              <td>{{pieza.nombre}}</td>
+              <td *ngIf="pieza.categoria == 'ae'">Accesorio Externo</td>
+              <td *ngIf="pieza.categoria == 'ai'">Accesorio Interno</td>
+              <td *ngIf="pieza.categoria == 'he'">Herramientas</td>
+              <td *ngIf="pieza.categoria == 'lq'">Liquidos</td>
+              <td>{{pieza.precio_fabricacion | currency:'USD'}}</td>
+              <td>{{pieza.precio_venta | currency:'USD'}}</td>
+              <td>{{pieza.existencia}}</td>
+              <td *ngIf="usuarioLog.cargo == 'e'"><button type="button" class="btn btn-outline-warning btn-sm" (click)=" toggleModficar(pieza);" >Modificar</button></td>
+            </ng-container>
+            </tr>
+          </tbody>
+        </table>
+          
+        <ng-container *ngIf="buttonModifica == true">
+            <form novalidate [formGroup]="formval2" (ngSubmit)="postEmpleadoModifica();">
+                <h4 class="text-left">Datos de la pieza</h4>
+            
+                <div class="row mb-4">
+            
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Nombre:</span>
+                      <input type="text" [(ngModel)]="piezaaux.nombre" formControlName="nombre" maxlength="60" class="form-control">
+                    </div>
+                  </div>
+            
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Categoria:</span>
+                      <select class="browser-default custom-select" [(ngModel)]="piezaaux.categoria" formControlName="categoria">
+                        <option [ngValue]="null" disabled> Elige puesto.. </option>
+                        <option *ngFor="let Categoria of Categorias" [ngValue]="Categoria">{{Categoria}}</option>
+                      </select>
+                    </div>
+                  </div>
+            
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Existencia:</span>
+                      <input type="number" [(ngModel)]="piezaaux.existencia" formControlName="existencia" min="0" maxlength="5"
+                        class="form-control">
+                    </div>
+                  </div>
+                </div>
+            
+                <h4 class="text-left">Precios </h4>
+            
+                <div class="row mb-2">
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Precio Fabr:</span>
+                      <input type="number" [(ngModel)]="piezaaux.precio_fabricacion" formControlName="precio_fabricacion" min="0"
+                        maxlength="9" class="form-control">
+                    </div>
+                  </div>
+            
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Precio Venta:</span>
+                      <input type="number" [(ngModel)]="piezaaux.precio_venta" formControlName="precio_venta" min="0" maxlength="9"
+                        class="form-control">
+                    </div>
+                  </div>
+            
+                </div>
+            
+                <div class="row mb-2">
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1">Descripcion:</span>
+                      <textarea class="form-control" rows="3" cols="100" [(ngModel)]="piezaaux.descripcion"
+                        formControlName="descripcion" aria-label="With textarea"></textarea>
+                    </div>
+                  </div>
+                </div>
+            
+               
+            
+                <button type="submit" [disabled]="formval2.invalid" class="btn btn-secondary">Guardar cambios</button>
+              </form>
+
+        </ng-container>
+        
+
+
+
+  </div>

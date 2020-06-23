@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require("mssql/msnodesqlv8");
-const path= require('path');
+const path = require('path');
 const multer = require('multer');
 
 /* Conexión con BD*/
@@ -17,9 +17,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-
-
 
 //Regresa todas la piezas validas registradas
 router.get("/api/piezas", async (req, res) => {

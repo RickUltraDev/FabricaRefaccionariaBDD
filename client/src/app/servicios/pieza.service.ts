@@ -61,6 +61,13 @@ postImagenPieza(file: FormData, idPieza:number){
   
 }
 
+ //Cambios de un empleado
+ putPiezaActualiza(pieza){
+  return this.http.put<ModelPieza>(environment.apiUlrl+ "/piezas/actualiza/"+pieza.idPieza,pieza);
+
+}
+
+
 
 
 
