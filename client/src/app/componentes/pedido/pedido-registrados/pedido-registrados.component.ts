@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en
 import { AuthService } from "src/app/servicios/auth.service";
 import { PedidoService } from 'src/app/servicios/pedido.service';
 import { PiezaService } from 'src/app/servicios/pieza.service';
+import { FacturaService } from 'src/app/servicios/factura.service';
+
 
 //Modal service
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
@@ -45,12 +47,18 @@ export class PedidoRegistradosComponent implements OnInit {
     //Variables surtido de pedido
     idPedidoaux: number;
     totalaux: number;
+    
+    //Variables de surtido
+    lenSurtido: number = 0;
+    lenButton: number = 0;
+    surtidoaux: string;
 
 
   constructor(
     private pedidoService: PedidoService,
     private authService: AuthService,
     private piezaService: PiezaService,
+    private facturaService:FacturaService,
     private router: Router,
     private toastr:ToastrService,
     private builder: FormBuilder,
@@ -125,13 +133,16 @@ export class PedidoRegistradosComponent implements OnInit {
   }
 
   //Modal de detalles 
-  open(contenido, idPedido:number, total_pagar:number){
+  open(contenido, idPedido:number, total_pagar:number, surtido:string){
      
      this.idPedidoaux = idPedido;
      this.totalaux = total_pagar;
+     this.surtidoaux = surtido;
     return this.pedidoService.postPedidoDetalles(idPedido).subscribe((resp:any) => {
       this.detallepedidos = resp["info"][0];
       this.modalService.open(contenido, {size: 'lg'}); 
+      
+      this.lenSurtido = this.detallepedidos.length;
       
        
   }, (error:any)=>{
@@ -154,11 +165,34 @@ export class PedidoRegistradosComponent implements OnInit {
 
 
   //Sutir un pedido
-  surtirPedido(){
-    console.log(this.usuarioLog);
+  surtirPedido(idPedido:number,idPieza:number, cantidad: number){
+    //Aumentar el pulsado del boton
+    this.lenButton += 1;
+    
+    console.log(cantidad);
+    console.log(idPieza);
+  
+    
+  }
+
+  generarfactura(){
+    
+    var fecha = new Date().toJSON().slice(0,10);    
+
+    console.log(this.usuarioLog["idEmpleado"]);
     console.log(this.idPedidoaux);
     console.log(this.totalaux);
-     
+
+    return this.
+    facturaService.postFacturaPedido(fecha, this.totalaux, this.idPedidoaux,this.usuarioLog["idEmpleado"]).subscribe((resp:any) => {
+      this.toastr.info("Se ha generado una factura.","Excelente");  
+       
+  }, (error:any)=>{
+    this.toastr.error("No se ha generado la factura, verifica los datos","Error");  
+  });
+
+
+
   }
 
 

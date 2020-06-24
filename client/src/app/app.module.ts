@@ -42,6 +42,7 @@ import { ClienteModificarComponent } from './componentes/cliente/cliente-modific
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-imagen.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FacturaRegistradosComponent } from './componentes/factura/factura-registrados/factura-registrados.component';
 
 
 
@@ -62,7 +63,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ClienteRegistrarComponent,
     ClienteModificarComponent,
     ClienteRegistradosComponent,
-    PiezaImagenComponent
+    PiezaImagenComponent,
+    FacturaRegistradosComponent
   ],
   imports: [
     BrowserModule,

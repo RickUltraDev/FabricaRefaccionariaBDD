@@ -70,7 +70,7 @@
         <td *ngIf="pedido.estatus_surtido == 'S'">Surtido</td>
         <td *ngIf="pedido.estatus_surtido == 'N'">No Surtido</td>
         <td>{{pedido.total_pagar | currency:'USD'}}</td>
-        <td> <button class="btn btn-outline-info btn-sm" (click)="open(contenido, pedido.idPedido, pedido.total_pagar)">Ver detalles</button></td> 
+        <td> <button class="btn btn-outline-info btn-sm" (click)="open(contenido, pedido.idPedido, pedido.total_pagar,pedido.estatus_surtido)">Ver detalles</button></td> 
 
         <ng-template #contenido let-modal>
           <div class="modal-header">
@@ -96,11 +96,14 @@
                       <td><img src='{{detallepedido.url}}' width="40px" height="30px" class="img-responsive"></td>
                       <td>{{detallepedido.cantidad}}</td>
                       <td><button type="button" class="btn btn-outline-info" (click)=" mostrarImagen(contenido2, detallepedido.idPieza)" >Ver pieza</button></td>
-                      <td> <button type="button" class="btn btn-outline-secondary" (click)="surtirPedido();"> Surtir</button></td>
-                  </tr>
+                      <td> <button type="button" class="btn btn-outline-secondary" [hidden]="lenSurtido == lenButton || surtidoaux == 'S'" [disabled]="lenSurtido == lenButton" (click)="surtirPedido(detallepedido.idPedido, detallepedido.idPieza, detallepedido.cantidad);"> Surtir</button>
+                        <button type="button" class="btn btn-outline-secondary" [hidden]="lenSurtido != lenButton || surtidoaux == 'S'"> En proceso</button>
+                        <button type="button" class="btn btn-outline-secondary" *ngIf="surtidoaux == 'S'" disabled> Surtido</button>
+                      </td>
+                    </tr>
                 </tbody>
               </table>
-              <button type="button" class="btn btn-outline-danger"> Terminar Surtir</button>
+              <button type="button" class="btn btn-outline-danger mt-4" [hidden] = "surtidoaux == 'S'"  [disabled]="lenSurtido != lenButton" (click)=" generarfactura();"> Facturar y terminar de surtir</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>

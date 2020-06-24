@@ -9,7 +9,6 @@ import { retry, catchError } from "rxjs/operators";
 
 import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en pantalla
 import { ModelPedido } from '../modelos/ModelPedido';
-import { ModelPieza } from '../modelos/ModeloPieza';
 
 @Injectable({
   providedIn: 'root'
@@ -38,10 +37,8 @@ postBusquedaPedido(idPedido:number, estatus_surtido:string, estatus_pago:string,
   .post<any>(environment.apiUlrl + "/pedidos/busqueda", JSON.stringify({idPedido, estatus_surtido, estatus_pago,fecha}),this.httpOptions); 
 }
 
-//--------------------------DETALLES PEDIDOS------------------------------------------------------
-
+//Post detallePedidos
 postPedidoDetalles(idPedido:number){
-   
   return this.http
   .post<any>(environment.apiUlrl + "/detallepedidos/busqueda", JSON.stringify({idPedido}),this.httpOptions); 
 }

@@ -29,6 +29,9 @@ router.get("/api/facturas", async (req, res) => {
 router.post("/api/facturas/registro", async (req, res) => {
   let {fecha, total, idPedido, idEmpleado} = req.body;
   const transaction = new sql.Transaction(dbpool)
+
+
+
   
   transaction.begin(err => {
        if(err){
@@ -57,7 +60,7 @@ router.post("/api/facturas/registro", async (req, res) => {
                       throw err;    
                       //Failed
                      }else{
-                       res.status(400).send({info: "Registro no realizado"});
+                       //res.status(400).send({info: "Registro no realizado"});
                      }
                   })
               }
@@ -68,13 +71,59 @@ router.post("/api/facturas/registro", async (req, res) => {
                   throw err;
                   //Failed
                  }else{
-                  res.status(200).send({info: "Registro exitoso"});
-                  //Success
+                   //Success
+                  transaction.begin(err => {
+                      if(err){
+                      console.log("Error: "+err);
+                      throw err;
+                        //Failed
+                      }else{
+                    let rolledBack = false
+
+                    transaction.on('rollback', aborted => {
+                        // emited with aborted === true
+                        rolledBack = true
+                    })
+                    let QueryReal2 = "update pedidofabrica set estatus_surtido = 'S' "+
+                    " Where idPedido = "+idPedido+";"
+                    
+                    new sql.Request(transaction).query(QueryReal2, (err,datos) => {
+                        // insert should fail because of invalid value
+                        if (err) {
+                          console.log("Error: "+err);
+                            if (!rolledBack) {
+                                transaction.rollback(err => {
+                                    if(err){
+                                    console.log("Error: "+err);
+                                    throw err;    
+                                    //Failed
+                                    }else{
+                                      res.status(400).send({info: "Registro no realizado"});
+                                    }
+                                })
+                            }
+                        } else {
+                            transaction.commit(err => {
+                              if(err){
+                                console.log("Error: "+err);
+                                throw err;
+                                //Failed
+                                }else{
+                                  res.status(200).send({info: "Registro realizado"});
+                                              
+                                } 
+                            })
+                        }//fin else
+                    })
+                  }})
+                               
                  } 
               })
           }//fin else
       })
-    }})  
+    }})
+    
+    
 });
 
 //Regresa una factura hecha para cierto pedido
