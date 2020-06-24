@@ -185,7 +185,9 @@ export class PedidoRegistradosComponent implements OnInit {
 
     return this.
     facturaService.postFacturaPedido(fecha, this.totalaux, this.idPedidoaux,this.usuarioLog["idEmpleado"]).subscribe((resp:any) => {
-      this.toastr.info("Se ha generado una factura.","Excelente");  
+      this.toastr.success("Se ha generado una factura.","Excelente");
+      //this.modalService.dismissAll;
+      this.cargarPedidos();
        
   }, (error:any)=>{
     this.toastr.error("No se ha generado la factura, verifica los datos","Error");  

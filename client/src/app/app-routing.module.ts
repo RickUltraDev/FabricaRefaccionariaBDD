@@ -21,6 +21,8 @@ import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-ima
 import { ClienteRegistrarComponent  } from './componentes/cliente/cliente-registrar/cliente-registrar.component';
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 import { ClienteModificarComponent  } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
+
+import { FacturaRegistradosComponent } from './componentes/factura/factura-registrados/factura-registrados.component';
 //import {  } from './componentes';
 
 //Rutas protegidas para encargado: 
@@ -52,7 +54,10 @@ const routes: Routes = [
 
       { path: "cliente/registro", component: ClienteRegistrarComponent},
       { path: "cliente/registrados", component: ClienteRegistradosComponent},
-      { path: "cliente/modificar", component: ClienteModificarComponent}
+      { path: "cliente/modificar", component: ClienteModificarComponent},
+
+
+      { path: "factura/registradas", component: FacturaRegistradosComponent}
 
     ]}
    

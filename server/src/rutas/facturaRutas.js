@@ -146,4 +146,74 @@ router.get("/api/facturas/:idPedido", async (req, res) => {
 
 
 
+//Busqueda de una pieza
+router.post("/api/facturas/busqueda",  (req, res) => {
+  let {idFactura, idPedido, idEmpleado} = req.body;
+
+
+  const transaction = new sql.Transaction(dbpool)
+
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })     
+            
+      let QueryReal = "SELECT * FROM facturafabrica f "+
+      " where idFactura = "+idFactura+" OR idPedido = "+idPedido+" OR idEmpleado = "+idEmpleado+" ;";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets});
+                    console.log(resultados.recordsets);
+                    
+                    
+                  }
+                  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
+
+
+
+
+
 module.exports = router;

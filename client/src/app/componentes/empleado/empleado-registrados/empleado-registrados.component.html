@@ -17,7 +17,7 @@
       <div class="col-md-4">
         <div class="input-group">
           <span class="input-group-text" id="basic-addon1">Nombre: </span>
-          <input type="text"  [(ngModel)]="nombre" formControlName="nombre" maxlength="60" class="form-control">
+          <input type="text"  [(ngModel)]="nombre" formControlName="nombre" maxlength="60" class="form-control" placeholder="Ejem: Ricardo Herrera">
         </div>
       </div>
     
@@ -43,7 +43,7 @@
             <th scope="row">{{empleado.idEmpleado}}</th>
             <td>{{empleado.nombre}}</td>
             <td >{{empleado.apellido_paterno}} {{empleado.apellido_materno}}</td>
-            <td >{{empleado.fecha_nacimiento | date:"dd/MM/yyyy"}}</td>
+            <td >{{empleado.fecha_nacimiento | date}}</td>
             <td >{{empleado.calle}} {{empleado.numero}}</td>
             <td >{{empleado.salario | currency:'USD'}} </td>
             <td >{{empleado.telefono}}</td>

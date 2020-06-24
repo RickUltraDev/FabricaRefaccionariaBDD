@@ -1,1 +1,60 @@
-<p>factura-registrados works!</p>
+<div class="container pt-5 mb-5">
+
+    <form novalidate [formGroup]="busquedaForm" (ngSubmit)="busquedaFactura();" class="mb-4">
+     <h4 class="text-left">Facturas registradas</h4>
+      <div class="row mb-2">
+        
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"># Factura: </span>
+                <input type="number" [(ngModel)]="idFactura" formControlName="idFactura" min="1" maxlength="10" class="form-control" placeholder="0">
+              </div>
+        </div>
+  
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"># Pedido: </span>
+                <input type="number" [(ngModel)]="idPedido" formControlName="idPedido" min="1" maxlength="10" class="form-control" placeholder="0">
+              </div>
+        </div>
+
+        
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Id Empleado: </span>
+                <input type="number" [(ngModel)]="idEmpleado" formControlName="idEmpleado" min="1" maxlength="10" class="form-control" placeholder="0">
+              </div>
+        </div>
+      
+        <div class="col-md-2">
+          <div class="input-group">
+            <button type="submit" [disabled]="busquedaForm.invalid" class="btn btn-outline-secondary">Buscar</button>
+          </div>
+        </div>
+      </div>
+     </form>
+  
+      <!-- Tabla para empleados normales -->
+      <table  class="table table-bordered table-hover table-md-responsive">
+          <thead class="thead-dark">
+            <tr class="text-uppercase text-center">
+              <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let factura of facturas;let indice as i" class="text-center">
+             <ng-container >
+              <th scope="row">{{factura.idFactura}}</th>
+              <td>{{factura.fecha | date}}</td>
+              <td>{{factura.idPedido}}</td>
+              <td>{{factura.idEmpleado}}</td>
+              <td>{{factura.total | currency:'USD'}}</td>
+              <td><button type="button" class="btn btn-outline-info btn-sm" >Ver factura</button></td>
+   
+            </ng-container>
+            </tr>
+          </tbody>
+        </table>
+        
+  </div>

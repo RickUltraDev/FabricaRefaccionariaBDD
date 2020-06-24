@@ -90,7 +90,6 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let detallepedido of detallepedidos;let indice as i" class="text-center">
-                
                       <th scope="row">{{detallepedido.idPieza}}</th>
                       <td>{{detallepedido.nombre}}</td>
                       <td><img src='{{detallepedido.url}}' width="40px" height="30px" class="img-responsive"></td>
@@ -103,7 +102,7 @@
                     </tr>
                 </tbody>
               </table>
-              <button type="button" class="btn btn-outline-danger mt-4" [hidden] = "surtidoaux == 'S'"  [disabled]="lenSurtido != lenButton" (click)=" generarfactura();"> Facturar y terminar de surtir</button>
+              <button type="button" class="btn btn-outline-danger mt-4" [hidden] = "surtidoaux == 'S'"  [disabled]="lenSurtido != lenButton" (click)=" generarfactura();" (click)="modal.close('Save click')"> Facturar y terminar de surtir</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>

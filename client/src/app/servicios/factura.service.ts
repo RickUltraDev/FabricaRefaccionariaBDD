@@ -31,8 +31,31 @@ postFacturaPedido(fecha:string, total:number, idPedido:number, idEmpleado:number
   .post<ModelFactura>(environment.apiUlrl + "/facturas/registro", JSON.stringify({fecha, total, idPedido, idEmpleado}),this.httpOptions); 
 }
 
+ //Obtenter todos los empleados
+ getFacturas(): Observable<ModelFactura> {
+  return this.http
+    .get<ModelFactura>(environment.apiUlrl + "/facturas").pipe(retry(1), catchError(this.handleError));
+}
 
 
+ //Obtenen la factura buscada
+ postBusquedaFactura(idFactura:number, idPedido:number, idEmpleado:number){
+  return this.http
+  .post<any>(environment.apiUlrl + "/facturas/busqueda", JSON.stringify({idFactura, idPedido, idEmpleado}),this.httpOptions); 
+}
 
+
+handleError(error) {
+  let errorMessage = "";
+  if (error.error instanceof ErrorEvent) {
+    // Get client-side error
+    errorMessage = error.error.message;
+  } else {
+    // Get server-side error
+    errorMessage = `Codigo de error: ${error.status}\nMensaje: ${error.message}`;
+  }
+  window.alert(errorMessage);
+  return throwError(errorMessage);
+}
 
 }

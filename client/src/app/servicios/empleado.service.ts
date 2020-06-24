@@ -7,7 +7,7 @@ import { Router } from "@angular/router";  //Es el router de angular para rediri
 import { Observable, throwError } from "rxjs";
 import { retry, catchError } from "rxjs/operators";
 
-import {ModelEmpleado } from "../modelos/ModelEmpleado"; //Modelo del objeto a mandar
+import { ModelEmpleado } from "../modelos/ModelEmpleado"; //Modelo del objeto a mandar
 import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en pantalla
 
 
