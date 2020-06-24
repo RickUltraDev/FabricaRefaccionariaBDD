@@ -4,12 +4,12 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms"; //Para vali
 
 /*Servicios usados*/
 import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en pantalla
-import { AuthService } from "../../../servicios/auth.service";
+import { AuthService } from "src/app/servicios/auth.service";
 import { PedidoService } from 'src/app/servicios/pedido.service';
+import { PiezaService } from 'src/app/servicios/pieza.service';
 
 //Modal service
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
-import { ModelPedido } from 'src/app/modelos/ModelPedido';
 
 
 
@@ -25,9 +25,11 @@ export class PedidoRegistradosComponent implements OnInit {
   detallepedidos:any = [];
 
   titulos: any[] = [{"name": "# pedido"},{"name": "fecha y hora"},{ "name": "id Cliente"},
-  { "name": "estatus de pago"},{"name": "estatus de envio"}];
+  { "name": "estatus de pago"},{"name": "estatus de surtido"}, {"name": "total"}];
   
-  titulosdetalles: any[] = [{"name": "# pedido"},{"name": "idPieza"},{ "name": "cantidad"}];
+  titulosdetalles: any[] = [{"name": "idPieza"}
+  ,{ "name": "nombre"} ,{ "name": "imagen"} ,{ "name": "cantidad"}];
+  
 
     //Variables de la busqueda
     public idPedido:number;
@@ -41,11 +43,19 @@ export class PedidoRegistradosComponent implements OnInit {
 
     //Formulario de busqueda
     formval: FormGroup;
+    
+    //Muestra imagen
+    srcaux:string;
+
+    //Variables surtido de pedido
+    idPedidoaux: number;
+    totalaux: number;
 
 
   constructor(
     private pedidoService: PedidoService,
     private authService: AuthService,
+    private piezaService: PiezaService,
     private router: Router,
     private toastr:ToastrService,
     private builder: FormBuilder,
@@ -64,6 +74,7 @@ export class PedidoRegistradosComponent implements OnInit {
   ngOnInit(): void {
     this.getUser();
     this.cargarPedidos();
+
   }
 
   getUser(){
@@ -85,6 +96,8 @@ export class PedidoRegistradosComponent implements OnInit {
     this.router.navigate(["navigation"]);});
   
   }
+
+  
 
   busquedaPedido(){
   
@@ -117,21 +130,44 @@ export class PedidoRegistradosComponent implements OnInit {
   }
 
   //Modal 
-  open(contenido, idPedido:number){
+  open(contenido, idPedido:number, total_pagar:number){
      
-
+     this.idPedidoaux = idPedido;
+     this.totalaux = total_pagar;
     return this.pedidoService.postPedidoDetalles(idPedido).subscribe((resp:any) => {
       this.detallepedidos = resp["info"][0];
-      console.log(this.detallepedidos);
       this.modalService.open(contenido, {size: 'lg'}); 
+      
        
   }, (error:any)=>{
     this.detallepedidos = null;
   });
-    
-   
+  }
+
+  //Mostrar imagen pieza
+  mostrarImagen(contenido2, idPieza:number){
+    this.piezaService.postBusquedaImagenPieza(idPieza).subscribe((resp:any) => {
+      // resp["info"][0];
+        console.log(resp["info"]);
+        this.srcaux = resp["info"];
+        
+      this.modalService.open(contenido2, {size: 'lg'}); 
+      
+  }, (error:any)=>{
+    this.detallepedidos = null;
+      });
   }
 
 
+  //Sutir un pedido
+  surtirPedido(){
+    console.log(this.usuarioLog);
+    console.log(this.idPedidoaux);
+    console.log(this.totalaux);
+     
+  }
+
+
+  
 
 }

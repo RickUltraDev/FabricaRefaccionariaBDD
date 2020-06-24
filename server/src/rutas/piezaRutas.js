@@ -398,4 +398,69 @@ router.post("/api/piezas/busqueda",  (req, res) => {
   
 });
 
+//Busqueda de una pieza por id
+router.post("/api/pieza/busqueda",  (req, res) => {
+  let { idPieza } = req.body;
+
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })     
+            
+      let QueryReal = "SELECT url FROM pieza"+
+      " WHERE idPieza = "+idPieza+";";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets[0][0].url});
+                    
+                  }
+                  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
+
+
+
+
 module.exports = router;

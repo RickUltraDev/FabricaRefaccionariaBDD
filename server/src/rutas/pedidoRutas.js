@@ -70,7 +70,8 @@ router.post("/api/detallepedidos/busqueda", async (req, res) => {
       
     
   
-      let QueryReal = "SELECT * FROM detallepedidopieza WHERE idPedido = "+idPedido+" ; ";
+      let QueryReal = "SELECT d.idPedido, p.idPieza, p.nombre, p.url, d.cantidad FROM detallepedidopieza d "+
+      "INNER JOIN pieza p ON d.idPieza = p.idPieza WHERE idPedido = "+idPedido+" ; ";
 
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {
           // insert should fail because of invalid value

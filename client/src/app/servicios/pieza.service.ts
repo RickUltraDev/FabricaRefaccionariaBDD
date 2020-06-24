@@ -67,6 +67,12 @@ postImagenPieza(file: FormData, idPieza:number){
 
 }
 
+//Busqueda de pieza por id 
+postBusquedaImagenPieza(idPieza){
+
+  return this.http
+  .post<any>(environment.apiUlrl + "/pieza/busqueda", JSON.stringify({idPieza}),this.httpOptions); 
+}
 
 
 
