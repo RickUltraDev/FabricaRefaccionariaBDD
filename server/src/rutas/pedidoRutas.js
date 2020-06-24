@@ -158,6 +158,63 @@ router.post("/api/pedidos/registro", async (req, res) => {
     }})      
 });
 
+//Surtir pedido
+router.post("/api/pedidos/surtir", async (req, res) => {
+  let { idPedido , idPieza, cantidad} = req.body;
+  const transaction = new sql.Transaction(dbpool)
+  
+  transaction.begin(err => {
+    if(err){
+    console.log("Error: "+err);
+    throw err;
+      //Failed
+    }else{
+  let rolledBack = false
+
+  transaction.on('rollback', aborted => {
+      // emited with aborted === true
+      rolledBack = true
+  })
+  
+  let QueryReal2 = "UPDATE pieza SET existencia = existencia - "+cantidad+" "+ 
+  " FROM pieza p INNER JOIN detallepedidopieza d ON d.idPieza = p.idPieza "+
+  " WHERE existencia >= "+cantidad+" and p.idPieza = "+idPieza+" ;"
+
+  new sql.Request(transaction).query(QueryReal2, (err,datos) => {
+      // insert should fail because of invalid value
+      if (err) {
+        console.log("Error: "+err);
+          if (!rolledBack) {
+              transaction.rollback(err => {
+                  if(err){
+                  console.log("Error: "+err);
+                  throw err;    
+                  //Failed
+                  }else{
+                    res.status(400).send({info: "Registro no realizado"});
+                  }
+              })
+          }
+      } else {
+          transaction.commit(err => {
+            if(err){
+              console.log("Error: "+err);
+              throw err;
+              //Failed
+              }else{
+              res.status(200).send({info: "Registro exitoso"});
+              //Success
+              } 
+          })
+      }//fin else
+  })
+}})  
+
+
+
+});
+
+
 
 //Registra los detalles del pedido valido
 router.post("/api/detallepedidos/registro", async (req, res) => {
@@ -176,9 +233,7 @@ router.post("/api/detallepedidos/registro", async (req, res) => {
           // emited with aborted === true
           rolledBack = true
       })
-      
-    
-  
+
       let QueryReal = "INSERT INTO detallepedidopieza (idPedido , idPieza, cantidad) VALUES "+
         " ("+idPedido+","+idPieza+","+cantidad+"); ";
 
@@ -197,14 +252,15 @@ router.post("/api/detallepedidos/registro", async (req, res) => {
                      }
                   })
               }
-          } else {
-              transaction.commit(err => {
-                if(err){
-                  console.log("Error: "+err);
-                  throw err;
-                  //Failed
-                 }else{
-                  res.status(200).send({info: "Registro exitoso"});
+            } else {
+                    transaction.commit(err => {
+                      if(err){
+                        console.log("Error: "+err);
+                        throw err;
+                        //Failed
+                      }else{
+                      // success
+                      res.status(200).send({info: "Registro exitoso"});
                   //Success
                  } 
               })

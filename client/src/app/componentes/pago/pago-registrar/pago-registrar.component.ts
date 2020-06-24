@@ -47,6 +47,10 @@ export class PagoRegistrarComponent implements OnInit {
     if(this.Pago.monto == undefined){
       this.Pago.monto = 0;
     }
+
+    if(this.Pago.total_llevado != 0){
+      this.Pago.monto = this.Pago.total_llevado;
+    }
     
 
     try {

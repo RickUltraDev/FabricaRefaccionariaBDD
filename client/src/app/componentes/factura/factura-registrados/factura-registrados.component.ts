@@ -95,7 +95,7 @@ export class FacturaRegistradosComponent implements OnInit {
 
     return this.facturaService.postBusquedaFactura(this.idFactura,this.idPedido, this.idEmpleado).subscribe((resp:any) => {
       this.facturas = resp["info"][0];
-      console.log(resp);
+      
       
       this.toastr.info("Objeto encontrado.","Listo");  
        
@@ -107,12 +107,6 @@ export class FacturaRegistradosComponent implements OnInit {
 
   open(contenido, idPedido:number){
     
-    /*console.log(this.clientes[0].idCliente);
-    console.log(this.clientes.length);*/
-    
-    //console.log(this.pedidos[0].idCliente);
-    //console.log(this.pedidos.length);
-
     let idP = idPedido;
     
 
@@ -128,8 +122,6 @@ export class FacturaRegistradosComponent implements OnInit {
     for (let j = 0; j < this.clientes.length; j++) {
       if(this.clientes[j].idCliente == this.idClienteaux){
         //  this.clientes[j] = this.clienteaux;
-        console.log(this.clientes[j]);
-
          this.clienteaux = this.clientes[j];
         
          break;

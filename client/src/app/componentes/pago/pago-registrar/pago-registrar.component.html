@@ -53,19 +53,10 @@
             </div>
   
           </div>
+  
     
-       <!--     tipo: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(8)]],
-      fecha_pago: [null],
-      monto: [null],
-      total_llevado: [null, Validators.required],
-      idPedido: [null, Validators.required]    -->
-
-
-        
-    
-    
-    
-    
-        <button type="submit" [disabled]="formval.invalid" class="btn btn-secondary">Agregar</button>
+        <button type="submit" [disabled]="formval.invalid" class="btn btn-secondary">Pagar</button>
       </form>
     </div>
+
+    <app-pedido-registrados></app-pedido-registrados>

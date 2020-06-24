@@ -43,6 +43,11 @@ postPedidoDetalles(idPedido:number){
   .post<any>(environment.apiUlrl + "/detallepedidos/busqueda", JSON.stringify({idPedido}),this.httpOptions); 
 }
 
+//Sutir pieza 
+postDetallePedido(idPedido:number, idPieza:number, cantidad:number){
+  return this.http
+  .post<any>(environment.apiUlrl + "/pedidos/surtir", JSON.stringify({ idPedido, idPieza,cantidad}),this.httpOptions); 
+}
 
 handleError(error) {
   let errorMessage = "";

@@ -42,8 +42,7 @@ export class PagoRegistradosComponent implements OnInit {
     return this.pagoService.getPagos().subscribe((resp: any) => {
       if(resp != null){
         this.pagos = resp["info"][0];  
-        console.log(this.pagos);
-        
+
                 
       }
     }, (error:any)=>{

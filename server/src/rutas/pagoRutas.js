@@ -64,6 +64,8 @@ router.post("/api/pagos/registro", async (req, res) => {
   let { tipo, fecha_pago, monto, total_llevado, idPedido } = req.body;
   const transaction = new sql.Transaction(dbpool)
   
+  console.log(req.body);
+  
   transaction.begin(err => {
        if(err){
         console.log("Error: "+err);
@@ -108,7 +110,58 @@ router.post("/api/pagos/registro", async (req, res) => {
                   throw err;
                   //Failed
                  }else{
-                  res.status(200).send({info: "Registro exitoso"});
+                  transaction.begin(err => {
+                    if(err){
+                     console.log("Error: "+err);
+                     throw err;
+                      //Failed
+                    }else{
+                   let rolledBack = false
+                
+                   transaction.on('rollback', aborted => {
+                       // emited with aborted === true
+                       rolledBack = true
+                   })
+                   
+                   let QueryReal2 = null;
+                   
+                   
+                     if(tipo == 'Contado'){
+                      QueryReal2 = "UPDATE pedidofabrica SET estatus_pago = 'S' where idPedido = "+idPedido+" ;";
+                     }else if(tipo == 'Credito'){
+                      QueryReal2 = "UPDATE pedidofabrica SET estatus_pago = 'N' where idPedido = "+idPedido+" ;"
+                     }
+                              
+             
+                   new sql.Request(transaction).query(QueryReal2, (err,datos) => {
+                       // insert should fail because of invalid value
+                       if (err) {
+                         console.log("Error2: "+err);
+                           if (!rolledBack) {
+                               transaction.rollback(err => {
+                                  if(err){
+                                   console.log("Error34: "+err);
+                                   throw err;    
+                                   //Failed
+                                  }else{
+                                    res.status(400).send({info: "Registro no realizado"});
+                                  }
+                               })
+                           }
+                       } else {
+                           transaction.commit(err => {
+                             if(err){
+                               console.log("Error: "+err);
+                               throw err;
+                               //Failed
+                              }else{
+                               res.status(200).send({info: "Registro exitoso"});
+                               //Success
+                              } 
+                           })
+                       }//fin else
+                   })
+                 }})  
                   //Success
                  } 
               })

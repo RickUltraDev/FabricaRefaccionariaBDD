@@ -169,10 +169,13 @@ export class PedidoRegistradosComponent implements OnInit {
     //Aumentar el pulsado del boton
     this.lenButton += 1;
     
-    console.log(cantidad);
-    console.log(idPieza);
-  
-    
+    return this.pedidoService.postDetallePedido(idPedido, idPieza, cantidad).subscribe((resp:any) => {
+      this.toastr.info("Se ha mandado surtido esta pieza.","Surtido");
+       
+  }, (error:any)=>{
+    this.toastr.error("No se ha podido surtir, no hay existencia","Error");  
+  });
+      
   }
 
   generarfactura(){
