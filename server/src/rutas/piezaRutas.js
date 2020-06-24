@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 router.get("/api/piezas", async (req, res) => {
   var piezas = null;
   try {
-    let QueryReal = "SELECT * FROM pieza";
+    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza]";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -59,7 +59,7 @@ router.post("/api/piezas/subir/:idPieza" , upload.single('file') , async (req, r
              rolledBack = true
          })
    
-         let QueryReal = "UPDATE pieza SET url = '"+nombreArch+"' WHERE idPieza = "+idPieza+";";
+         let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] SET url = '"+nombreArch+"' WHERE idPieza = "+idPieza+";";
    
          new sql.Request(transaction).query(QueryReal, (err,datos) => {
              // insert should fail because of invalid value
@@ -116,7 +116,7 @@ router.post("/api/piezas/registro", async (req, res) => {
           rolledBack = true
       })
       
-      let QueryReal = "INSERT INTO pieza (nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, valido, url) VALUES "+
+      let QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] (nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, valido, url) VALUES "+
       "('"+nombre+"','"+descripcion+"',"+precio_fabricacion+","+precio_venta+","+existencia+",'"+categoria+"',1,'"+url+"');";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -170,7 +170,7 @@ router.post("/api/piezas/registro", async (req, res) => {
           rolledBack = true
       })
 
-     let QueryReal = "UPDATE pieza SET valido = 0 WHERE idPieza = "+idPieza+";";
+     let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] SET valido = 0 WHERE idPieza = "+idPieza+";";
 
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -223,7 +223,7 @@ router.put("/api/piezas/actualiza/:idPieza", async (req, res) => {
                   rolledBack = true
               })
               
-              let QueryReal = "UPDATE pieza SET nombre = '"+nombre+"', descripcion = '"+descripcion+"',"+ 
+              let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] SET nombre = '"+nombre+"', descripcion = '"+descripcion+"',"+ 
               "precio_fabricacion = '"+precio_fabricacion+"', precio_venta = '"+precio_venta+
               "', existencia = "+existencia+", categoria = '"+categoria+"', valido = "+valido+
               "  WHERE idPieza= "+idPieza+";";
@@ -280,7 +280,7 @@ router.put("/api/piezas/actualiza/existencia/:idPieza", async (req, res) => {
            rolledBack = true
        })
        
-       let QueryReal = "UPDATE pieza SET existencia = "+existencia+ "WHERE idPieza= "+idPieza+";";
+       let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] SET existencia = "+existencia+ "WHERE idPieza= "+idPieza+";";
 
        new sql.Request(transaction).query(QueryReal, (err,datos) => {
            // insert should fail because of invalid value
@@ -319,7 +319,7 @@ router.get("/api/piezas/:idPieza", async (req, res) => {
   const { idPieza } = req.params;
    
   try {
-    let QueryReal = "SELECT * FROM pieza WHERE idPieza = "+idPieza;
+    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] WHERE idPieza = "+idPieza;
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -353,7 +353,7 @@ router.post("/api/piezas/busqueda",  (req, res) => {
           rolledBack = true
       })     
             
-      let QueryReal = "SELECT * FROM pieza"+
+      let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] "+
       " WHERE categoria = '"+categoria+"' AND nombre LIKE '%"+nombre+"%';";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {
@@ -417,7 +417,7 @@ router.post("/api/pieza/busqueda",  (req, res) => {
           rolledBack = true
       })     
             
-      let QueryReal = "SELECT url FROM pieza"+
+      let QueryReal = "SELECT url FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza]"+
       " WHERE idPieza = "+idPieza+";";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {

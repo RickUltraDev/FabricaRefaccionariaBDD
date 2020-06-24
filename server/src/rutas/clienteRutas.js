@@ -11,7 +11,7 @@ var dbpool = require('../database');
 router.get("/api/clientes", async (req, res) => {
     var clientes = null;
       try {
-        let QueryReal = "SELECT * FROM clientefabrica";
+        let QueryReal = "SELECT * FROM [192.168.0.3].[fabricarefaccionaria].[dbo].[clientefabrica]";
         dbpool.query(QueryReal, (err, resultados)=>{
           if(err){
               console.log(err);
@@ -45,7 +45,7 @@ router.post("/api/clientes/registro", async (req, res) => {
           rolledBack = true
       })
       
-      let QueryReal = "INSERT INTO clientefabrica (razon_social, correo, calle, numero, cp, ciudad, estado, telefono, valido) VALUES ('"+razon_social
+      let QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[clientefabrica] (razon_social, correo, calle, numero, cp, ciudad, estado, telefono, valido) VALUES ('"+razon_social
       +"','"+correo+"','"+calle+"',"+numero+","+cp+",'"+ciudad+"','"+estado+"',"+telefono+",1);";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -101,7 +101,7 @@ router.delete("/api/clientes/elimina/:idCliente", async (req, res) => {
           rolledBack = true
       })
 
-     let QueryReal = "UPDATE clientefabrica SET valido = 0 WHERE idCliente = "+idCliente+";";
+     let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[clientefabrica] SET valido = 0 WHERE idCliente = "+idCliente+";";
 
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -155,7 +155,7 @@ router.put("/api/clientes/actualiza/:idCliente", async (req, res) => {
              rolledBack = true
          })
          
-         let QueryReal = "UPDATE clientefabrica "+"SET razon_social = '"+
+         let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[clientefabrica] "+"SET razon_social = '"+
          razon_social+"', correo = '"+correo+"' , calle = '"+calle+"', numero = "+
          numero+" , cp = "+cp+", ciudad = '"+ciudad+"', estado = '"+estado+"', telefono = "+
          telefono+" , valido = "+valido+" WHERE idCliente  = "+idCliente+";";
@@ -212,7 +212,7 @@ router.post("/api/clientes/busqueda",  (req, res) => {
           rolledBack = true
       });
                   
-      let QueryReal = "SELECT * FROM clientefabrica"+
+      let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[clientefabrica] "+
       " WHERE razon_social LIKE '%"+razon_social+"%';";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {

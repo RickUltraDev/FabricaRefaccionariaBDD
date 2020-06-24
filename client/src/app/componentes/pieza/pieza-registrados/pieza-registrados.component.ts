@@ -25,7 +25,7 @@ export class PiezaRegistradosComponent implements OnInit {
    //Variables de la busqueda
   public nombre:string;
   public categoria:string;
-  Categorias = ["Accesorios Internos", "Accesorios Externos","Herramientas","Liquidos"];
+  Categorias = ["Afinación", "Frenos","Suspensión","Clutch de Embrague","Enfriamiento","Ajuste de motor"];
   //Formulario de busqueda
   formval: FormGroup;
 
@@ -82,17 +82,6 @@ export class PiezaRegistradosComponent implements OnInit {
   }
 
   busquedaPieza(){
-    // [" ai - "Accesorios Internos", " ae - Accesorios Externos"," he Herramientas","lq Liquidos"];
-    if(this.categoria == 'Accesorios Internos'){
-      this.categoria = 'ai';
-    }else if(this.categoria == 'Accesorios Externos'){
-      this.categoria= 'ae'
-    }else if(this.categoria == 'Herramientas'){
-      this.categoria= 'he'
-    }else if(this.categoria == 'Liquidos'){
-      this.categoria= 'lq'
-    }    
-    
 
     return this.piezaService.postBusquedaPieza(this.nombre,this.categoria).subscribe((resp:any) => {
       this.piezas = resp["info"][0];

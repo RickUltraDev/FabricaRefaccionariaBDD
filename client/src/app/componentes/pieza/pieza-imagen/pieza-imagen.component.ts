@@ -30,7 +30,7 @@ export class PiezaImagenComponent implements OnInit {
    //Variables de la busqueda
   public nombre:string;
   public categoria:string;
-  Categorias = ["Accesorios Internos", "Accesorios Externos","Herramientas","Liquidos"];
+  Categorias = ["Afinación", "Frenos","Suspensión","Clutch de Embrague","Enfriamiento","Ajuste de motor"];
   //Formulario de busqueda
   formval: FormGroup;
    

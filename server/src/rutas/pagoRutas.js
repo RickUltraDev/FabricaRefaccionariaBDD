@@ -9,7 +9,7 @@ var dbpool = require('../database');
 router.get("/api/pagos", async (req, res) => {
   var piezas = null;
   try {
-    let QueryReal = "SELECT * FROM pago";
+    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pago]";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -27,7 +27,7 @@ router.get("/api/pagos", async (req, res) => {
  router.get("/api/pagos/credito", async (req, res) => {
   var piezas = null;
   try {
-    let QueryReal = "SELECT * FROM pago WHERE tipo = 'cr'";
+    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pago] WHERE tipo = 'cr'";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -45,7 +45,7 @@ router.get("/api/pagos", async (req, res) => {
  router.get("/api/pagos/contado", async (req, res) => {
   var piezas = null;
   try {
-    let QueryReal = "SELECT * FROM pago WHERE tipo = 'co'";
+    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pago] WHERE tipo = 'co'";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -83,7 +83,7 @@ router.post("/api/pagos/registro", async (req, res) => {
       
       
      //tipo, fecha_pago, monto, total_llevado, idPedido
-        QueryReal = "INSERT INTO pago (tipo, fecha_pago, monto, total_llevado, idPedido) VALUES "+
+        QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[pago] (tipo, fecha_pago, monto, total_llevado, idPedido) VALUES "+
       "('"+tipo+"','"+fecha_pago+"',"+monto+","+total_llevado+","+idPedido+");";
 
       
@@ -127,9 +127,9 @@ router.post("/api/pagos/registro", async (req, res) => {
                    
                    
                      if(tipo == 'Contado'){
-                      QueryReal2 = "UPDATE pedidofabrica SET estatus_pago = 'S' where idPedido = "+idPedido+" ;";
+                      QueryReal2 = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] SET estatus_pago = 'S' where idPedido = "+idPedido+" ;";
                      }else if(tipo == 'Credito'){
-                      QueryReal2 = "UPDATE pedidofabrica SET estatus_pago = 'N' where idPedido = "+idPedido+" ;"
+                      QueryReal2 = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] SET estatus_pago = 'N' where idPedido = "+idPedido+" ;"
                      }
                               
              
@@ -191,7 +191,7 @@ router.post("/api/pagos/registro", async (req, res) => {
                     rolledBack = true
                 })
                 
-                let QueryReal = "UPDATE pago SET monto = "+monto+" WHERE idPago = "+idPedido+
+                let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pago] SET monto = "+monto+" WHERE idPago = "+idPedido+
                 "AND fecha_pago <= '1900-01-01';";
        
                 new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -231,7 +231,7 @@ router.get("/api/pagos/credito/abonos/:idPedido", async (req, res) => {
   const  {idPedido} = req.params;
 
   try {
-    let QueryReal = "SELECT * FROM pago WHERE tipo = 'cr' AND idPedido = "+idPedido;
+    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pago] WHERE tipo = 'cr' AND idPedido = "+idPedido;
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -266,7 +266,7 @@ router.post("/api/pagos/busqueda",  (req, res) => {
           rolledBack = true
       })     
             
-      let QueryReal = "SELECT * FROM pago WHERE idPedido = "+idPedido+" ;";
+      let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pago] WHERE idPedido = "+idPedido+" ;";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {
           // insert should fail because of invalid value
