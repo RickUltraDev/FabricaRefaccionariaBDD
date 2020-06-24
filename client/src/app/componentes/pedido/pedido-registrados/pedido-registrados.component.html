@@ -65,10 +65,10 @@
         <th scope="row">{{pedido.idPedido}}</th>
         <td>{{pedido.fecha | date:'medium'}}</td>
         <td>{{pedido.idCliente}}</td>
-        <td *ngIf="pedido.estatus_pago == 's'">Pagado</td>
-        <td *ngIf="pedido.estatus_pago == 'n'">No Pagado</td>
-        <td *ngIf="pedido.estatus_surtido == 's'">Surtido</td>
-        <td *ngIf="pedido.estatus_surtido == 'n'">No Surtido</td>
+        <td *ngIf="pedido.estatus_pago == 'S'">Pagado</td>
+        <td *ngIf="pedido.estatus_pago == 'N'">No Pagado</td>
+        <td *ngIf="pedido.estatus_surtido == 'S'">Surtido</td>
+        <td *ngIf="pedido.estatus_surtido == 'N'">No Surtido</td>
         <td> <button class="btn btn-outline-info btn-sm" (click)="open(contenido, pedido.idPedido)">Ver detalles</button></td> 
 
         <ng-template #contenido let-modal>
@@ -107,13 +107,5 @@
       </tr>
     </tbody>
   </table>
-
- 
-  
-
-  
-  
-  
-
 
 </div>

@@ -16,7 +16,7 @@ export class PiezaRegistrarComponent implements OnInit {
   public Pieza: ModelPieza;
   formval: FormGroup;
    
-  Categorias = ["Accesorios Internos", "Accesorios Externos","Herramientas","Liquidos"];
+  Categorias = ["Afinación", "Frenos","Suspensión","Clutch de Embrague","Enfriamiento","Ajuste de motor"];
 
   constructor(
     private builder: FormBuilder,
@@ -47,25 +47,7 @@ export class PiezaRegistrarComponent implements OnInit {
 
     try {
       if (!this.formval.invalid) {
-       //Categorias = ["Accesorios Internos", "Accesorios Externos","Herramientas","Liquidos"];
-       //AI - Accesorios Internos\\nAE- Accesorios Externos\\nHE - Herramientas y equipos\\nLQ - Liquidos y Químicos\\n
-
-       if(this.Pieza.categoria == 'Accesorios Internos'){
-        this.Pieza.categoria = 'ai';
-       }
-
-       if(this.Pieza.categoria == 'Accesorios Externos'){
-        this.Pieza.categoria = 'ae';
-       }
-
-       if(this.Pieza.categoria == 'Herramientas'){
-        this.Pieza.categoria = 'he';
-       }
-
-       if(this.Pieza.categoria == 'Liquidos'){
-        this.Pieza.categoria = 'lq';
-       }
-
+      
         
         await this.piezaService.postRegistroPieza(this.Pieza);
         

@@ -41,10 +41,7 @@
                  <th scope="row">{{pieza.idPieza}}</th>
                  <td><img src='{{ pieza.url}}' width="40px" height="30px" class="img-responsive"></td>
                  <td>{{pieza.nombre}}</td>
-                 <td *ngIf="pieza.categoria == 'ae'">Accesorio Externo</td>
-                 <td *ngIf="pieza.categoria == 'ai'">Accesorio Interno</td>
-                 <td *ngIf="pieza.categoria == 'he'">Herramientas</td>
-                 <td *ngIf="pieza.categoria == 'lq'">Liquidos</td>
+                 <td>{{pieza.categoria}}</td>
                  <td>{{pieza.precio_fabricacion | currency:'USD'}}</td>
                  <td>{{pieza.precio_venta | currency:'USD'}}</td>
                  <td>{{pieza.existencia}}</td>

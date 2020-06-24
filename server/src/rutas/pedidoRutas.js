@@ -377,10 +377,12 @@ router.post("/api/pedidos/busqueda",  (req, res) => {
           rolledBack = true
       });
       
+      console.log(fecha);
+      
 
       let QueryReal = "SELECT * FROM pedidofabrica "+
       " WHERE CONVERT(VARCHAR(25), fecha, 126) LIKE '"+fecha+"%' OR estatus_surtido LIKE '"+estatus_surtido+
-      "' OR estatus_pago LIKE '"+estatus_pago+"' OR idPedido = "+idPedido+";";
+      "' AND estatus_pago LIKE '"+estatus_pago+"' OR idPedido = "+idPedido+";";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {
           // insert should fail because of invalid value
