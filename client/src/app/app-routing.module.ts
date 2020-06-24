@@ -17,12 +17,13 @@ import { PiezaRegistrarComponent} from './componentes/pieza/pieza-registrar/piez
 import { PiezaRegistradosComponent } from './componentes/pieza/pieza-registrados/pieza-registrados.component';
 import { PiezaModificaComponent } from './componentes/pieza/pieza-modifica/pieza-modifica.component';
 import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-imagen.component';
-
 import { ClienteRegistrarComponent  } from './componentes/cliente/cliente-registrar/cliente-registrar.component';
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 import { ClienteModificarComponent  } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
-
 import { FacturaRegistradosComponent } from './componentes/factura/factura-registrados/factura-registrados.component';
+import { PagoRegistrarComponent } from './componentes/pago/pago-registrar/pago-registrar.component';
+import { PagoRegistradosComponent } from './componentes/pago/pago-registrados/pago-registrados.component';
+import { PagoModificarComponent } from './componentes/pago/pago-modificar/pago-modificar.component';
 //import {  } from './componentes';
 
 //Rutas protegidas para encargado: 
@@ -56,8 +57,11 @@ const routes: Routes = [
       { path: "cliente/registrados", component: ClienteRegistradosComponent},
       { path: "cliente/modificar", component: ClienteModificarComponent},
 
+      { path: "factura/registradas", component: FacturaRegistradosComponent},
 
-      { path: "factura/registradas", component: FacturaRegistradosComponent}
+      { path: "pago/registro", component: PagoRegistrarComponent},
+      { path: "pago/registrados", component: PagoRegistradosComponent},
+      { path: "pago/modificar", component: PagoModificarComponent}
 
     ]}
    

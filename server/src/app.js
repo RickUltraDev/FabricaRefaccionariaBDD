@@ -31,7 +31,6 @@ app.get("/", async (req, res) => {
 /* Rutas para las conexiones */
 app.use(require("./rutas/clienteRutas"));
 app.use(require("./rutas/empleadoRutas"));
-app.use(require("./rutas/envioRutas"));
 app.use(require("./rutas/piezaRutas"));
 app.use(require("./rutas/facturaRutas"));
 app.use(require("./rutas/pagoRutas"));

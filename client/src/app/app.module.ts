@@ -26,6 +26,9 @@ import {TokenInterceptorService} from './servicios/token-interceptor.service';
 import { HomeComponent } from './componentes/homepage/home/home.component';
 import { NavigationComponent } from './componentes/homepage/navigation/navigation.component';
 
+/* Modulo angular */
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 /* Modulos de todo lo demás */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EmpleadoRegistroComponent } from './componentes/empleado/empleado-registro/empleado-registro.component';
@@ -41,8 +44,11 @@ import { ClienteRegistrarComponent } from './componentes/cliente/cliente-registr
 import { ClienteModificarComponent } from './componentes/cliente/cliente-modificar/cliente-modificar.component';
 import { ClienteRegistradosComponent } from './componentes/cliente/cliente-registrados/cliente-registrados.component';
 import { PiezaImagenComponent } from './componentes/pieza/pieza-imagen/pieza-imagen.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { FacturaRegistradosComponent } from './componentes/factura/factura-registrados/factura-registrados.component';
+import { PagoRegistradosComponent } from './componentes/pago/pago-registrados/pago-registrados.component';
+import { PagoModificarComponent } from './componentes/pago/pago-modificar/pago-modificar.component';
+import { PagoRegistrarComponent } from './componentes/pago/pago-registrar/pago-registrar.component';
 
 
 
@@ -64,7 +70,10 @@ import { FacturaRegistradosComponent } from './componentes/factura/factura-regis
     ClienteModificarComponent,
     ClienteRegistradosComponent,
     PiezaImagenComponent,
-    FacturaRegistradosComponent
+    FacturaRegistradosComponent,
+    PagoRegistradosComponent,
+    PagoModificarComponent,
+    PagoRegistrarComponent
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms"; //Para vali
 import { ModelEmpleado } from 'src/app/modelos/ModelEmpleado';
 
 // Servicios que usará la página
-import { EmpleadoService } from '../../../servicios/empleado.service';
+import { EmpleadoService } from 'src/app/servicios/empleado.service';
 
 @Component({
   selector: 'app-empleado-registro',

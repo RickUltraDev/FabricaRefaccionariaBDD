@@ -1,0 +1,71 @@
+<div class="container pt-5">
+    <form novalidate  [formGroup]="formval" (ngSubmit)="postPago();">
+        <h4 class="text-left">Datos pagos</h4>
+          
+
+        <div class="row mb-4">
+
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Fecha del pago:</span>
+              <input type="date" [(ngModel)]="Pago.fecha_pago" formControlName="fecha_pago" class="form-control">
+            </div>
+          </div>
+          
+
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Tipo pago:</span>
+              <select class="browser-default custom-select" [(ngModel)]="Pago.tipo" formControlName="tipo">
+                <option [ngValue]="null" disabled> Elige puesto.. </option>
+                <option *ngFor="let TipoPag of TiposPag" [ngValue]="TipoPag">{{TipoPag}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Id Pedido:</span>
+              <input type="number" [(ngModel)]="Pago.idPedido" min="0" maxlength="9" formControlName="idPedido" class="form-control">
+            </div>
+          </div>
+    
+        </div>
+
+        <div class="row mb-4" *ngIf="Pago.tipo == 'Credito' ">
+            
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Monto:</span>
+              <input type="number" [(ngModel)]="Pago.monto" min="0" maxlength="9" formControlName="monto" class="form-control">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row mb-4" *ngIf="Pago.tipo == 'Contado' ">
+            
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Total:</span>
+                <input type="number" [(ngModel)]="Pago.total_llevado" min="0" maxlength="9" formControlName="total_llevado" class="form-control">
+              </div>
+            </div>
+  
+          </div>
+    
+       <!--     tipo: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(8)]],
+      fecha_pago: [null],
+      monto: [null],
+      total_llevado: [null, Validators.required],
+      idPedido: [null, Validators.required]    -->
+
+
+        
+    
+    
+    
+    
+        <button type="submit" [disabled]="formval.invalid" class="btn btn-secondary">Agregar</button>
+      </form>
+    </div>

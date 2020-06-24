@@ -79,17 +79,12 @@ router.post("/api/pagos/registro", async (req, res) => {
       
       let QueryReal = null;
       
-      console.log(tipo);
       
-
-      if (tipo == 'cr'){
+     //tipo, fecha_pago, monto, total_llevado, idPedido
         QueryReal = "INSERT INTO pago (tipo, fecha_pago, monto, total_llevado, idPedido) VALUES "+
       "('"+tipo+"','"+fecha_pago+"',"+monto+","+total_llevado+","+idPedido+");";
 
-      }else if(tipo == 'co'){
-        QueryReal = "INSERT INTO pago (tipo, fecha_pago, idPedido) VALUES "+
-      "('"+tipo+"','"+fecha_pago+"',"+idPedido+");";
-      }
+      
 
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -196,6 +191,73 @@ router.get("/api/pagos/credito/abonos/:idPedido", async (req, res) => {
     console.log(error);
   } 
 });
+
+//Busqueda de una pieza
+router.post("/api/pagos/busqueda",  (req, res) => {
+  
+  let {idPedido} = req.body;
+  
+   
+  const transaction = new sql.Transaction(dbpool)
+
+  transaction.begin(err => {
+       if(err){
+        console.log("Error: "+err);
+        throw err;
+         //Failed
+       }else{
+      let rolledBack = false
+   
+      transaction.on('rollback', aborted => {
+          // emited with aborted === true
+          rolledBack = true
+      })     
+            
+      let QueryReal = "SELECT * FROM pago WHERE idPedido = "+idPedido+" ;";
+      
+      new sql.Request(transaction).query(QueryReal, (err,resultados) => {
+          // insert should fail because of invalid value
+          if (err) {
+            console.log("Error: "+err);
+              if (!rolledBack) {
+                  transaction.rollback(err => {
+                     if(err){
+                      console.log("Error: "+err);
+                      throw err;    
+                      //Failed
+                     }else{
+                       res.status(400).send({info: "Registro no realizado"});
+                     }
+                  })
+              }
+          } else {
+              transaction.commit(err => {
+                if(err){
+                  console.log("Error: "+err);
+                  throw err;
+                  //Failed
+                 }else{
+                
+                  if(resultados.recordsets[0] == 0){
+                    res.status(404).send({info: null});
+                    
+                  }else{
+                    res.status(200).send({info: resultados.recordsets});
+                    console.log(resultados.recordsets);
+                    
+                    
+                  }
+                  
+                  //Success
+                 } 
+              })
+          }//fin else
+      })
+    }})
+
+  
+});
+
 
 
 
