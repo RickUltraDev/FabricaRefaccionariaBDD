@@ -20,30 +20,25 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 })
 export class PedidoRegistradosComponent implements OnInit {
   
-  usuarioLog = {id: '',nombre: '',cargo: '',};
+  usuarioLog = {id: '',nombre: '',cargo: ''};
   pedidos: any = [];
   detallepedidos:any = [];
 
   titulos: any[] = [{"name": "# pedido"},{"name": "fecha y hora"},{ "name": "id Cliente"},
   { "name": "estatus de pago"},{"name": "estatus de surtido"}, {"name": "total"}];
   
-  titulosdetalles: any[] = [{"name": "idPieza"}
-  ,{ "name": "nombre"} ,{ "name": "imagen"} ,{ "name": "cantidad"}];
+  titulosdetalles: any[] = [{"name": "idPieza"},{ "name": "nombre"} ,{ "name": "imagen"},
+  { "name": "cantidad"}];
   
-
     //Variables de la busqueda
     public idPedido:number;
     public estatus_surtido:string;
     public estatus_pago:string;
     public fecha:string
-    
-
     TiposEnv = ["Surtido", "No Surtido"];
     TiposPag = ["Pagado", "No Pagado"];
-
     //Formulario de busqueda
     formval: FormGroup;
-    
     //Muestra imagen
     srcaux:string;
 
@@ -129,7 +124,7 @@ export class PedidoRegistradosComponent implements OnInit {
 
   }
 
-  //Modal 
+  //Modal de detalles 
   open(contenido, idPedido:number, total_pagar:number){
      
      this.idPedidoaux = idPedido;
@@ -144,17 +139,16 @@ export class PedidoRegistradosComponent implements OnInit {
   });
   }
 
-  //Mostrar imagen pieza
+  //Modal de mostrar imagen pieza
   mostrarImagen(contenido2, idPieza:number){
     this.piezaService.postBusquedaImagenPieza(idPieza).subscribe((resp:any) => {
-      // resp["info"][0];
-        console.log(resp["info"]);
         this.srcaux = resp["info"];
         
       this.modalService.open(contenido2, {size: 'lg'}); 
       
   }, (error:any)=>{
-    this.detallepedidos = null;
+       this.srcaux = null
+         
       });
   }
 

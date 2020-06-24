@@ -9,6 +9,10 @@ import { AuthService } from "../../../servicios/auth.service";
 import { PiezaService } from 'src/app/servicios/pieza.service';
 import { ModelPieza } from 'src/app/modelos/ModeloPieza';
 
+
+//Modal service
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+
 @Component({
   selector: 'app-pieza-imagen',
   templateUrl: './pieza-imagen.component.html',
@@ -29,21 +33,21 @@ export class PiezaImagenComponent implements OnInit {
   Categorias = ["Accesorios Internos", "Accesorios Externos","Herramientas","Liquidos"];
   //Formulario de busqueda
   formval: FormGroup;
-
- //Variables para modificar
    
   //Variables para cambio
   buttonModifica:boolean =  false;
   piezaaux:any;
-  
 
+   //Muestra imagen
+   srcaux:string;
 
   constructor(
     private builder: FormBuilder,
     private router: Router,
     private piezaService: PiezaService,
     private authService: AuthService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private modalService: NgbModal
   ) { 
     this.formval = this.builder.group({
       nombre: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
@@ -118,6 +122,19 @@ export class PiezaImagenComponent implements OnInit {
 
 
   }
+
+   //Modal de mostrar imagen pieza
+   mostrarImagen(contenido2, idPieza:number){
+    this.piezaService.postBusquedaImagenPieza(idPieza).subscribe((resp:any) => {
+        this.srcaux = resp["info"];
+        
+      this.modalService.open(contenido2, {size: 'lg'}); 
+      
+  }, (error:any)=>{
+       this.srcaux = null
+      });
+  }
+
 
 
   toggleModficar(pieza: ModelPieza){    

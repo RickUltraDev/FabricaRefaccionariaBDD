@@ -9,6 +9,10 @@ import { PiezaService } from 'src/app/servicios/pieza.service';
 import { ModelPieza } from 'src/app/modelos/ModeloPieza';
 
 
+//Modal service
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+
 @Component({
   selector: 'app-pieza-modifica',
   templateUrl: './pieza-modifica.component.html',
@@ -35,13 +39,17 @@ export class PiezaModificaComponent implements OnInit {
 
   public Pieza: ModelPieza;
   formval2: FormGroup;
+
+   //Muestra imagen
+   srcaux:string;
    
   constructor(
     private piezaService:PiezaService,
     private authService: AuthService,
     private router: Router,
     private toastr:ToastrService,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private modalService: NgbModal
   ) { 
     this.formval = this.builder.group({
       nombre: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
@@ -159,6 +167,19 @@ export class PiezaModificaComponent implements OnInit {
       }
         
      }
+
+     //Modal de mostrar imagen pieza
+   mostrarImagen(contenido2, idPieza:number){
+    this.piezaService.postBusquedaImagenPieza(idPieza).subscribe((resp:any) => {
+        this.srcaux = resp["info"];
+        
+      this.modalService.open(contenido2, {size: 'lg'}); 
+      
+  }, (error:any)=>{
+       this.srcaux = null
+      });
+  }
+
 
 
   

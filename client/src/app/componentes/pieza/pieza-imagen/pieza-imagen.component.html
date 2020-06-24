@@ -1,4 +1,5 @@
-<div class="container p-5">
+<div class="container pt-5 mb-5">
+  
     <form novalidate [formGroup]="formval" (ngSubmit)="busquedaPieza();" class="mb-4">
         <h4 class="text-left">Piezas registradas</h4>
          <div class="row mb-2">
@@ -28,10 +29,11 @@
          </div>
         </form>
    
-         <table class="table table-bordered table-hover table-md-responsive">
+        <table  class="table table-bordered table-hover table-md-responsive">
              <thead class="thead-dark">
                <tr class="text-uppercase text-center">
                  <th *ngFor="let titulo of titulos">{{titulo.name}}</th>
+                 <th></th>
                  <th *ngIf="usuarioLog.cargo == 'e'"></th>
                </tr>
              </thead>
@@ -45,11 +47,27 @@
                  <td>{{pieza.precio_fabricacion | currency:'USD'}}</td>
                  <td>{{pieza.precio_venta | currency:'USD'}}</td>
                  <td>{{pieza.existencia}}</td>
+                 <td><button type="button" class="btn btn-outline-info btn-sm" (click)=" mostrarImagen(contenido2, pieza.idPieza)" >Ver pieza</button></td>
                  <td *ngIf="usuarioLog.cargo == 'e'"><button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleModficar(pieza);" >Cambiar imagen</button></td>
                </ng-container>
                </tr>
              </tbody>
            </table>
+  
+           <ng-template #contenido2 let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Imagen de pieza</h4>
+              <button type="button" class="close btn btn-outline-dark" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <img src="{{srcaux}}" class="img-thumbnail rounded mx-auto d-block" alt="">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+            </div>
+          </ng-template>
 
 
   <ng-container *ngIf="buttonModifica == true">

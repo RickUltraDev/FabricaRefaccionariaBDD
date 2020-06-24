@@ -7,6 +7,9 @@ import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en
 import { AuthService } from "../../../servicios/auth.service";
 import { PiezaService } from 'src/app/servicios/pieza.service';
 
+//Modal service
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+
 @Component({
   selector: 'app-pieza-registrados',
   templateUrl: './pieza-registrados.component.html',
@@ -26,12 +29,16 @@ export class PiezaRegistradosComponent implements OnInit {
   //Formulario de busqueda
   formval: FormGroup;
 
+   //Muestra imagen
+   srcaux:string;
+
   constructor(
     private piezaService:PiezaService,
     private authService: AuthService,
     private router: Router,
     private toastr:ToastrService,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private modalService: NgbModal
   ) { 
     this.formval = this.builder.group({
       nombre: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
@@ -96,6 +103,18 @@ export class PiezaRegistradosComponent implements OnInit {
     this.toastr.error("No se ha encontrado, verifica los datos","Error");  
   });
     
+  }
+
+   //Modal de mostrar imagen pieza
+   mostrarImagen(contenido2, idPieza:number){
+    this.piezaService.postBusquedaImagenPieza(idPieza).subscribe((resp:any) => {
+        this.srcaux = resp["info"];
+        
+      this.modalService.open(contenido2, {size: 'lg'}); 
+      
+  }, (error:any)=>{
+       this.srcaux = null
+      });
   }
 
   
