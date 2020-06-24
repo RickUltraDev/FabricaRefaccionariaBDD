@@ -191,7 +191,53 @@ router.post("/api/pedidos/surtir", async (req, res) => {
                   throw err;    
                   //Failed
                   }else{
-                    res.status(400).send({info: "Registro no realizado"});
+
+                    transaction.begin(err => {
+                      if(err){
+                      console.log("Error: "+err);
+                      throw err;
+                        //Failed
+                      }else{
+                    let rolledBack = false
+                  
+                    transaction.on('rollback', aborted => {
+                        // emited with aborted === true
+                        rolledBack = true
+                    })
+                    
+                    let QueryReal3 = "delete from [192.168.196.192].[fabricarefaccionaria].[dbo].[detallepedidopieza] where idPedido = "+idPedido+" ;"
+                  
+                    new sql.Request(transaction).query(QueryReal3, (err,datos) => {
+                        // insert should fail because of invalid value
+                        if (err) {
+                          console.log("Error: "+err);
+                            if (!rolledBack) {
+                                transaction.rollback(err => {
+                                    if(err){
+                                    console.log("Error: "+err);
+                                    throw err;    
+                                    //Failed
+                                    }else{
+                                      res.status(400).send({info: "Registro no realizado"});
+                  
+                                    }
+                                })
+                            }
+                        } else {
+                            transaction.commit(err => {
+                              if(err){
+                                console.log("Error: "+err);
+                                throw err;
+                                //Failed
+                                }else{
+                                //res.status(200).send({info: "Registro exitoso"});
+                                res.status(400).send({info: "Registro no realizado"});
+                                //Success
+                                } 
+                            })
+                        }//fin else
+                    })
+                  }})  
                   }
               })
           }
