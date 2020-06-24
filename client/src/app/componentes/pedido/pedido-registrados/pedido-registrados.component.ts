@@ -11,7 +11,7 @@ import { FacturaService } from 'src/app/servicios/factura.service';
 
 
 //Modal service
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 

@@ -50,11 +50,122 @@
               <td>{{factura.idPedido}}</td>
               <td>{{factura.idEmpleado}}</td>
               <td>{{factura.total | currency:'USD'}}</td>
-              <td><button type="button" class="btn btn-outline-info btn-sm" >Ver factura</button></td>
-   
+              <td><button type="button" class="btn btn-outline-info btn-sm" (click)="open(contenido, factura.idPedido)" >Ver factura</button></td>
+             
+
+              <ng-template #contenido let-modal>
+                <div class="modal-header">
+                  <h4 class="modal-title" id="modal-basic-title">Factura Digital </h4>
+                  <button type="button" class="close btn btn-outline-dark" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="p-3 mb-2 bg-info text-white"><h4 class="text-center">Fabrica DoHammer</h4>
+                  </div>
+                  <dl class="row">
+                    
+                    <dt class="col-sm-3"># Nota:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">{{factura.idFactura}}</p>
+                      
+                    </dd>
+
+
+                    <dt class="col-sm-3">Dirección:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">Aguascalientes Aguascalientes.</p>
+                      <p class="text-muted">Miguel Hidalgo #238, 4759</p>
+                      
+                    </dd>
+                    <dt class="col-sm-3">Correo:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">DoHammer@gmail.com</p>
+                      
+                    </dd>
+
+                    <dt class="col-sm-3">Telefono:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">449-549-69-78</p>
+                      
+                    </dd>          
+                  </dl>
+
+                  <div class="p-3 mb-2 bg-info text-white"><h4 class="text-center">Facturar al cliente </h4>
+                  </div>
+                   
+                  <dl class="row">
+                    
+                    <dt class="col-sm-3">Nombre:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">{{clienteaux.razon_social}}</p>
+                      
+                    </dd>
+
+
+                    <dt class="col-sm-3">Dirección:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">{{clienteaux.calle}} {{clienteaux.numero}}</p>
+                    </dd>
+                    <dt class="col-sm-3">Correo:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">{{clienteaux.correo}}</p>
+                      
+                    </dd>
+
+                    <dt class="col-sm-3">Telefono:</dt>
+                    <dd class="col-sm-9">
+                      <p class="text-muted text-justify">{{clienteaux.telefono}}</p>
+                      
+                    </dd>          
+                  </dl>
+
+                  <div class="p-3  bg-info text-white"><h4 class="text-center">Detalles pedido </h4>
+                  </div>
+
+                  <table  class="table table-bordered table-hover table-md-responsive">
+                    <thead class="thead-dark">
+                      <tr class="text-uppercase text-center">
+                        <th *ngFor="let titulodetalles of titulosdetalles">{{titulodetalles.name}}</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let detallepedido of detallepedidos;let indice as i" class="text-center">
+                          <th scope="row">{{detallepedido.idPieza}}</th>
+                          <td>{{detallepedido.nombre}}</td>
+                          <td><img src='{{detallepedido.url}}' width="40px" height="30px" class="img-responsive"></td>
+                          <td>{{detallepedido.cantidad}}</td>
+                          <td><button type="button" class="btn btn-outline-info" (click)=" mostrarImagen(contenido2, detallepedido.idPieza)" >Ver pieza</button></td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  
+                  <p class="text-right"> <b>Total:</b> {{factura.total | currency:'USD'}}</p>
+                   
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+                </div>
+              </ng-template>
             </ng-container>
             </tr>
           </tbody>
         </table>
+
+        <ng-template #contenido2 let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Imagen de pieza</h4>
+            <button type="button" class="close btn btn-outline-dark" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img src="{{srcaux}}" class="img-thumbnail rounded mx-auto d-block" alt="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+          </div>
+        </ng-template>
         
   </div>

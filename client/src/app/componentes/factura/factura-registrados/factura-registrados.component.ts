@@ -5,6 +5,12 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms"; //Para vali
 /*Servicios usados*/
 import { ToastrService } from 'ngx-toastr'; //Para tener los mensaje de toast en pantalla
 import { FacturaService } from 'src/app/servicios/factura.service';
+import { PedidoService } from 'src/app/servicios/pedido.service';
+import { ClienteService } from 'src/app/servicios/cliente.service';
+import { PiezaService } from 'src/app/servicios/pieza.service';
+
+//Modal service
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-factura-registrados',
@@ -26,11 +32,29 @@ export class FacturaRegistradosComponent implements OnInit {
    //Formulario de busqueda
    busquedaForm: FormGroup;
 
+   //Variables modal factura
+   detallepedidos:any = [];
+   titulosdetalles: any[] = [{"name": "idPieza"},{ "name": "nombre"} ,{ "name": "imagen"},
+   { "name": "cantidad"}];
+   idPedidoaux:number;
+   clientes: any = [];
+   pedidos: any = [];
+   idClienteaux: number;
+   clienteaux: any;
+
+   //Variables modal imagen
+   srcaux:string;
+
   constructor(
     private facturaService: FacturaService,
+    private pedidoService: PedidoService,
+    private clienteService: ClienteService,
+    private piezaService: PiezaService,
     private router: Router,
     private toastr:ToastrService,
-    private builder: FormBuilder
+    private builder: FormBuilder,
+    private modalService: NgbModal
+
   ) { 
     this.busquedaForm = this.builder.group({
       idFactura: [null],
@@ -41,14 +65,14 @@ export class FacturaRegistradosComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarFacturas();
+    this.cargarClientes();
+    this.cargarPedidos();
   }
 
   cargarFacturas(){
     return this.facturaService.getFacturas().subscribe((resp: any) => {
       if(resp != null){
-         this.facturas = resp["info"][0];
-         console.log(this.facturas);
-         
+         this.facturas = resp["info"][0];         
       }
    }, (error:any)=>{
     this.toastr.error("Se produjo un error.","Error");  
@@ -80,6 +104,87 @@ export class FacturaRegistradosComponent implements OnInit {
     this.toastr.error("No se ha encontrado, verifica los datos","Error");  
   });
   }
+
+  open(contenido, idPedido:number){
+    
+    /*console.log(this.clientes[0].idCliente);
+    console.log(this.clientes.length);*/
+    
+    //console.log(this.pedidos[0].idCliente);
+    //console.log(this.pedidos.length);
+
+    let idP = idPedido;
+    
+
+   for (let i = 0; i < this.pedidos.length; i++) {
+      
+        if(this.pedidos[i].idPedido === idPedido){
+          this.idClienteaux = this.pedidos[i].idCliente;    
+          break;
+        }
+     
+   }
+
+    for (let j = 0; j < this.clientes.length; j++) {
+      if(this.clientes[j].idCliente == this.idClienteaux){
+        //  this.clientes[j] = this.clienteaux;
+        console.log(this.clientes[j]);
+
+         this.clienteaux = this.clientes[j];
+        
+         break;
+        }             
+    }
+   
+    return this.pedidoService.postPedidoDetalles(idPedido).subscribe((resp:any) => {
+      this.detallepedidos = resp["info"][0];
+      this.modalService.open(contenido, {size: 'lg'}); 
+      
+       
+  }, (error:any)=>{
+    this.detallepedidos = null;
+  });
+   
+  }
+
+  cargarClientes(){
+
+    return this.clienteService.getClientes().subscribe((resp: any) => {
+      if(resp != null){
+         this.clientes = resp["info"][0];         
+      }
+   }, (error:any)=>{
+    this.toastr.error("Se produjo un error.","Error");  
+    this.router.navigate(["navigation"]);});
+  
+  }
+
+  cargarPedidos(){
+    return this.pedidoService.getPedidos().subscribe((resp: any) => {
+      if(resp != null){
+         this.pedidos = resp["info"][0];  
+                
+      }
+    }, (error:any)=>{
+    this.toastr.error("Se produjo un error.","Error");  
+    this.router.navigate(["navigation"]);});
+  
+  }
+  
+  //Modal de mostrar imagen pieza
+  mostrarImagen(contenido2, idPieza:number){
+    this.piezaService.postBusquedaImagenPieza(idPieza).subscribe((resp:any) => {
+        this.srcaux = resp["info"];
+        
+      this.modalService.open(contenido2, {size: 'lg'}); 
+      
+  }, (error:any)=>{
+       this.srcaux = null
+         
+      });
+  }
+
+
   
 
 
