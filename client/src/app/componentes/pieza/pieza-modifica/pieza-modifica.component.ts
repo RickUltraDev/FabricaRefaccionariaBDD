@@ -31,6 +31,7 @@ export class PiezaModificaComponent implements OnInit {
   Categorias = ["Afinación", "Frenos","Suspensión","Clutch de Embrague","Enfriamiento","Ajuste de motor"];
   //Formulario de busqueda
   formval: FormGroup;
+  buscBool: boolean = false;
 
    //Variables para cambio
    buttonModifica:boolean =  false;
@@ -111,11 +112,13 @@ export class PiezaModificaComponent implements OnInit {
 
     return this.piezaService.postBusquedaPieza(this.nombre,this.categoria).subscribe((resp:any) => {
       this.piezas = resp["info"][0];
-      this.toastr.info("Objeto encontrado.","Listo");  
+      this.toastr.info("Objeto encontrado.","Listo");
+      this.buscBool = false;  
        
   }, (error:any)=>{
     this.piezas = null;
-    this.toastr.error("No se ha encontrado, verifica los datos","Error");  
+    this.toastr.error("No se ha encontrado, verifica los datos","Error");
+    this.buscBool = true;  
   });
     
   }

@@ -25,6 +25,7 @@ export class EmpleadoRegistradosComponent implements OnInit {
 
    //Formulario de busqueda
    busquedaForm: FormGroup;
+   buscBool: boolean = false;
   
   constructor(
     private empleadoService: EmpleadoService,
@@ -70,11 +71,13 @@ export class EmpleadoRegistradosComponent implements OnInit {
     }      
     return this.empleadoService.postBusquedaEmpleado(this.nombre,this.cargo).subscribe((resp:any) => {
       this.empleados = resp["info"][0];
-      this.toastr.info("Empleado encontrado.","Listo");  
+      this.toastr.info("Empleado encontrado.","Listo"); 
+      this.buscBool = false; 
        
   }, (error:any)=>{
     this.empleados = null;
-    this.toastr.error("No se ha encontrado, verifica los datos","Error");  
+    this.toastr.error("No se ha encontrado, verifica los datos","Error");
+    this.buscBool = true;   
   });
     
   }

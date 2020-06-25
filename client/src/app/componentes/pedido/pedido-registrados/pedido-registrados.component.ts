@@ -47,6 +47,7 @@ export class PedidoRegistradosComponent implements OnInit {
     //Variables surtido de pedido
     idPedidoaux: number;
     totalaux: number;
+    buscBool: boolean = false;
     
     //Variables de surtido
     lenSurtido: number = 0;
@@ -123,11 +124,13 @@ export class PedidoRegistradosComponent implements OnInit {
 
     return this.pedidoService.postBusquedaPedido(this.idPedido, this.estatus_surtido, this. estatus_pago,this.fecha).subscribe((resp:any) => {
       this.pedidos = resp["info"][0];
-      this.toastr.info("Objeto encontrado.","Listo");  
+      this.toastr.info("Objeto encontrado.","Listo");
+      this.buscBool = false;   
        
   }, (error:any)=>{
     this.pedidos = null;
-    this.toastr.error("No se ha encontrado, verifica los datos","Error");  
+    this.toastr.error("No se ha encontrado, verifica los datos","Error"); 
+    this.buscBool = true;  
   });
 
   }

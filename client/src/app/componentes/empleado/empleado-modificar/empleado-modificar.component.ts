@@ -26,6 +26,7 @@ export class EmpleadoModificarComponent implements OnInit {
   
   //Formulario de busqueda
   busquedaForm: FormGroup;
+  buscBool: boolean = false;
   
   //Variables para cambio
   buttonModifica:boolean =  false;
@@ -91,10 +92,12 @@ export class EmpleadoModificarComponent implements OnInit {
     return this.empleadoService.postBusquedaEmpleado(this.nombre,this.cargo).subscribe((resp:any) => {
       this.empleados = resp["info"][0];
       this.toastr.info("Empleado encontrado.","Listo");  
+      this.buscBool = false;
        
   }, (error:any)=>{
     this.empleados = null;
-    this.toastr.error("No se encontrado, verifica los datos","Error");  
+    this.toastr.error("No se encontrado, verifica los datos","Error"); 
+    this.buscBool = true;  
   });
   }
 

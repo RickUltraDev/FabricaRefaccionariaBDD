@@ -19,7 +19,14 @@
         </div>
        </form>  
 
-       <table  class="table table-bordered table-hover table-md-responsive">
+       <ng-container *ngIf="buscBool == true">
+        <blockquote class="blockquote text-center">
+          <i class="fa fa-search fa-4x mb-4"></i>
+          <p class="mb-0">No se encontraron resultados.</p>
+        </blockquote>
+       </ng-container>
+
+       <table *ngIf="clientes != 0 && buscBool == false" class="table table-bordered table-hover table-md-responsive">
         <thead class="thead-dark">
           <tr class="text-uppercase text-center">
             <th *ngFor="let titulo of titulos">{{titulo.name}}</th>

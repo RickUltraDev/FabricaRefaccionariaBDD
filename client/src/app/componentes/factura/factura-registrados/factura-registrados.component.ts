@@ -31,6 +31,7 @@ export class FacturaRegistradosComponent implements OnInit {
    
    //Formulario de busqueda
    busquedaForm: FormGroup;
+   buscBool: boolean = false;
 
    //Variables modal factura
    detallepedidos:any = [];
@@ -95,13 +96,13 @@ export class FacturaRegistradosComponent implements OnInit {
 
     return this.facturaService.postBusquedaFactura(this.idFactura,this.idPedido, this.idEmpleado).subscribe((resp:any) => {
       this.facturas = resp["info"][0];
-      
-      
-      this.toastr.info("Objeto encontrado.","Listo");  
+      this.toastr.info("Objeto encontrado.","Listo");
+      this.buscBool = false;   
        
   }, (error:any)=>{
     this.facturas = null;
-    this.toastr.error("No se ha encontrado, verifica los datos","Error");  
+    this.toastr.error("No se ha encontrado, verifica los datos","Error");
+    this.buscBool = true;  
   });
   }
 

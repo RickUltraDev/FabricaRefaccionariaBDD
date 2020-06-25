@@ -23,6 +23,7 @@ export class ClienteModificarComponent implements OnInit {
   public nombre:string;
    //Formulario de busqueda
    formval: FormGroup;
+   buscBool: boolean = false;
 
   //Variables para cambio
   buttonModifica:boolean =  false;
@@ -86,10 +87,12 @@ export class ClienteModificarComponent implements OnInit {
     return this.clienteService.postBusquedaCliente(this.nombre).subscribe((resp:any) => {
       this.clientes = resp["info"][0];
       this.toastr.info("Objeto encontrado.","Listo");  
+      this.buscBool = false; 
        
   }, (error:any)=>{
     this.clientes = null;
     this.toastr.error("No se ha encontrado, verifica los datos","Error");  
+    this.buscBool = true; 
   });
     
   }

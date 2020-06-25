@@ -21,6 +21,7 @@ export class PagoRegistradosComponent implements OnInit {
   //Formulario de busqueda
   formval: FormGroup;
   idPedido:number;
+  buscBool: boolean = false;
 
   constructor(
     private pagoService: PagoService,
@@ -57,11 +58,13 @@ export class PagoRegistradosComponent implements OnInit {
    
     return this.pagoService.postBusquedaPago(this.idPedido).subscribe((resp:any) => {
       this.pagos = resp["info"][0];
-      this.toastr.info("Objeto encontrado.","Listo");  
+      this.toastr.info("Objeto encontrado.","Listo"); 
+      this.buscBool = false; 
        
   }, (error:any)=>{
     this.pagos = null;
-    this.toastr.error("No se ha encontrado, verifica los datos","Error");  
+    this.toastr.error("No se ha encontrado, verifica los datos","Error");
+    this.buscBool = true;  
   });
 
   }
