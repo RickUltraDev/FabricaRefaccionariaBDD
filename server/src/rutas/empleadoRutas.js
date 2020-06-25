@@ -119,7 +119,7 @@ router.get("/api/empleados/paquetes", verifyToken, async (req, res) => {
 //Regresa todos los empleados registrados validos
 router.get("/api/empleados",  verifyToken, async (req, res) => {
     try {
-      let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[empleadofabrica]";
+      let QueryReal = "SELECT * FROM empleadofabrica";
       dbpool.query(QueryReal, (err, resultados)=>{
         if(err){
             console.log(err);
@@ -153,7 +153,7 @@ router.post("/api/empleados/registro",  verifyToken,  (req, res) => {
           rolledBack = true
       })
       
-      let QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[empleadofabrica] (nombre, apellido_paterno, apellido_materno, fecha_nacimiento,"+ 
+      let QueryReal = "INSERT INTO empleadofabrica (nombre, apellido_paterno, apellido_materno, fecha_nacimiento,"+ 
       "calle, numero, cp, telefono, cargo, salario, correo, contrasena, valido) VALUES ('"+ 
       nombre+"','"+apellido_paterno+"','"+apellido_materno+"','"+fecha_nacimiento+"','"+calle+"',"+numero+","+cp+","+telefono+",'"+cargo+"',"+salario+",'"+correo+"','"+contrasena+"',1);";
       
@@ -209,7 +209,7 @@ router.delete("/api/empleados/elimina/:idEmpleado", verifyToken, (req, res) => {
           rolledBack = true
       })
 
-     let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[empleadofabrica] SET valido = 0 WHERE idEmpleado = "+idEmpleado+";";
+     let QueryReal = "UPDATE empleadofabrica SET valido = 0 WHERE idEmpleado = "+idEmpleado+";";
 
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
           // insert should fail because of invalid value
@@ -268,7 +268,7 @@ router.put("/api/empleados/actualiza/:idEmpleado", verifyToken, async (req, res)
              rolledBack = true
          })
          
-         let QueryReal = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[empleadofabrica] SET nombre = '"+nombre+"', apellido_paterno = '"+apellido_paterno+"',"+ 
+         let QueryReal = "UPDATE empleadofabrica SET nombre = '"+nombre+"', apellido_paterno = '"+apellido_paterno+"',"+ 
          "apellido_materno = '"+apellido_materno+"', fecha_nacimiento = '"+fecha_nacimiento+"',"+ 
          "calle = '"+calle+"', numero = "+numero+" , cp = "+cp+" , telefono = "+telefono+","+
          "cargo = '"+cargo+"', salario = "+salario+", correo = '"+correo+"', contrasena = '"+contrasena+"', valido = "+valido+
@@ -327,7 +327,7 @@ transaction.begin(err => {
        rolledBack = true
    })
 
-  let QueryReal = "UPDATE [192.168.0.3].[fabricarefaccionaria].[dbo].[empleadofabrica] SET cargo = '"+cargo+
+  let QueryReal = "UPDATE empleadofabrica SET cargo = '"+cargo+
   "', salario = '"+salario+"' WHERE idEmpleado = "+idEmpleado+";";
 
    new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -400,7 +400,7 @@ router.post("/api/empleados/busqueda",  (req, res) => {
       })
       
             
-      let QueryReal = "SELECT * FROM [192.168.0.3].[fabricarefaccionaria].[dbo].[empleadofabrica] "+
+      let QueryReal = "SELECT * FROM empleadofabrica "+
       " WHERE cargo = '"+cargo+"' AND nombre LIKE '%"+nombre+"%' OR apellido_materno LIKE '"+apellido_materno+
       "%' OR apellido_paterno LIKE '"+apellido_paterno+"%';";
       

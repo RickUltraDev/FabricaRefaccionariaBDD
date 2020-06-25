@@ -70,8 +70,8 @@ router.post("/api/detallepedidos/busqueda", async (req, res) => {
       
     
   
-      let QueryReal = "SELECT d.idPedido, p.idPieza, p.nombre, p.url, d.cantidad FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[detallepedidopieza] d "+
-      "INNER JOIN [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] p ON d.idPieza = p.idPieza WHERE idPedido = "+idPedido+" ; ";
+      let QueryReal = "SELECT d.idPedido, p.idPieza, p.nombre, p.url, d.cantidad FROM detallepedidopieza d "+
+      "INNER JOIN pieza p ON d.idPieza = p.idPieza WHERE idPedido = "+idPedido+" ; ";
 
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {
           // insert should fail because of invalid value
@@ -124,7 +124,7 @@ router.post("/api/pedidos/registro", async (req, res) => {
       
     
   
-      let QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] (fecha, total_pagar ,estatus_surtido, estatus_pago, idCliente) VALUES "+
+      let QueryReal = "INSERT INTO pedidofabrica (fecha, total_pagar ,estatus_surtido, estatus_pago, idCliente) VALUES "+
         " ('"+fecha+"',"+total_pagar+",'"+estatus_surtido+"','"+estatus_pago+"',"+idCliente+"); ";
 
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -176,8 +176,8 @@ router.post("/api/pedidos/surtir", async (req, res) => {
       rolledBack = true
   })
   
-  let QueryReal2 = "UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] SET existencia = existencia - "+cantidad+" "+ 
-  " FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pieza] p INNER JOIN [192.168.196.192].[fabricarefaccionaria].[dbo].[detallepedidopieza] d ON d.idPieza = p.idPieza "+
+  let QueryReal2 = "UPDATE pieza SET existencia = existencia - "+cantidad+" "+ 
+  " FROM pieza p INNER JOIN detallepedidopieza d ON d.idPieza = p.idPieza "+
   " WHERE existencia >= "+cantidad+" and p.idPieza = "+idPieza+" ;"
 
   new sql.Request(transaction).query(QueryReal2, (err,datos) => {
@@ -205,7 +205,7 @@ router.post("/api/pedidos/surtir", async (req, res) => {
                         rolledBack = true
                     })
                     
-                    let QueryReal3 = "delete from [192.168.196.192].[fabricarefaccionaria].[dbo].[detallepedidopieza] where idPedido = "+idPedido+" ;"
+                    let QueryReal3 = "delete from detallepedidopieza where idPedido = "+idPedido+" ;"
                   
                     new sql.Request(transaction).query(QueryReal3, (err,datos) => {
                         // insert should fail because of invalid value
@@ -280,7 +280,7 @@ router.post("/api/detallepedidos/registro", async (req, res) => {
           rolledBack = true
       })
 
-      let QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[detallepedidopieza] (idPedido , idPieza, cantidad) VALUES "+
+      let QueryReal = "INSERT INTO detallepedidopieza (idPedido , idPieza, cantidad) VALUES "+
         " ("+idPedido+","+idPieza+","+cantidad+"); ";
 
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -335,7 +335,7 @@ router.delete("/api/pedidos/elimina/:idPedido", async (req, res) => {
              rolledBack = true
          })
    
-        let QueryReal = "DELETE [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] WHERE idPedido = "+idPedido+";";
+        let QueryReal = "DELETE pedidofabrica WHERE idPedido = "+idPedido+";";
    
          new sql.Request(transaction).query(QueryReal, (err,datos) => {
              // insert should fail because of invalid value
@@ -388,7 +388,7 @@ router.put("/api/pedidos/actualiza/:idPedido", async (req, res) => {
            rolledBack = true
        })
        
-       let QueryReal = " UPDATE [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] SET fecha = '"+fecha+"', total_pagar = "+total_pagar+","+
+       let QueryReal = " UPDATE pedidofabrica SET fecha = '"+fecha+"', total_pagar = "+total_pagar+","+
        "estatus_surtido = '"+estatus_surtido+"', estatus_pago = '"+estatus_pago+"', idCliente = "+idCliente+""+
        "WHERE idPedido = "+idPedido+";";
 
@@ -427,7 +427,7 @@ router.put("/api/pedidos/actualiza/:idPedido", async (req, res) => {
 //Regresa los pedidos que aun no se han surtido
 router.get("/api/pedidos/surtidos", async (req, res) => {
   try {
-    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] WHERE estatus_surtido = 'n';";
+    let QueryReal = "SELECT * FROM pedidofabrica WHERE estatus_surtido = 'n';";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -445,7 +445,7 @@ router.get("/api/pedidos/surtidos", async (req, res) => {
 //Regresa el gasto promedio de pedidos
 router.get("/api/pedidos/gasto", async (req, res) => {
   try {
-    let QueryReal = "SELECT Cast(Round(sum(total_pagar)/count(*),2,1) as decimal(18,2)) FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica];";
+    let QueryReal = "SELECT Cast(Round(sum(total_pagar)/count(*),2,1) as decimal(18,2)) FROM pedidofabrica;";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -483,7 +483,7 @@ router.post("/api/pedidos/busqueda",  (req, res) => {
       console.log(fecha);
       
 
-      let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] "+
+      let QueryReal = "SELECT * FROM pedidofabrica "+
       " WHERE CONVERT(VARCHAR(25), fecha, 126) LIKE '"+fecha+"%' OR estatus_surtido LIKE '"+estatus_surtido+
       "' AND estatus_pago LIKE '"+estatus_pago+"' OR idPedido = "+idPedido+";";
       

@@ -9,7 +9,7 @@ var dbpool = require('../database');
 router.get("/api/facturas", async (req, res) => {
   var facturas = null;
   try {
-    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[facturafabrica] ";
+    let QueryReal = "SELECT * FROM facturafabrica ";
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -46,7 +46,7 @@ router.post("/api/facturas/registro", async (req, res) => {
           rolledBack = true
       })
       
-      let QueryReal = "INSERT INTO [192.168.196.192].[fabricarefaccionaria].[dbo].[facturafabrica] (fecha, total, idPedido, idEmpleado ) VALUES "+
+      let QueryReal = "INSERT INTO facturafabrica (fecha, total, idPedido, idEmpleado ) VALUES "+
       "('"+fecha+"',"+total+","+idPedido+","+idEmpleado+");";
       
       new sql.Request(transaction).query(QueryReal, (err,datos) => {
@@ -84,7 +84,7 @@ router.post("/api/facturas/registro", async (req, res) => {
                         // emited with aborted === true
                         rolledBack = true
                     })
-                    let QueryReal2 = "update [192.168.196.192].[fabricarefaccionaria].[dbo].[pedidofabrica] set estatus_surtido = 'S' "+
+                    let QueryReal2 = "update pedidofabrica set estatus_surtido = 'S' "+
                     " Where idPedido = "+idPedido+";"
                     
                     new sql.Request(transaction).query(QueryReal2, (err,datos) => {
@@ -130,7 +130,7 @@ router.post("/api/facturas/registro", async (req, res) => {
 router.get("/api/facturas/:idPedido", async (req, res) => {
   const { idPedido } = req.params;
   try {
-    let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[facturafabrica] WHERE idPedido = "+idPedido;
+    let QueryReal = "SELECT * FROM facturafabrica WHERE idPedido = "+idPedido;
     dbpool.query(QueryReal, (err, resultados)=>{
       if(err){
           console.log(err);
@@ -166,7 +166,7 @@ router.post("/api/facturas/busqueda",  (req, res) => {
           rolledBack = true
       })     
             
-      let QueryReal = "SELECT * FROM [192.168.196.192].[fabricarefaccionaria].[dbo].[facturafabrica] f "+
+      let QueryReal = "SELECT * FROM facturafabrica f "+
       " where idFactura = "+idFactura+" OR idPedido = "+idPedido+" OR idEmpleado = "+idEmpleado+" ;";
       
       new sql.Request(transaction).query(QueryReal, (err,resultados) => {

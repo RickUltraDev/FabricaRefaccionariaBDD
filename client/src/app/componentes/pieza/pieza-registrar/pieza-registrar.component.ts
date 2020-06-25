@@ -28,7 +28,7 @@ export class PiezaRegistrarComponent implements OnInit {
     //nombre, descripcion, precio_fabricacion, precio_venta, existencia, categoria, url 
     this.formval = this.builder.group({
       nombre: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(60)]],
-      descripcion: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(200)]],
+      descripcion: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(300)]],
       precio_fabricacion: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(6)]],
       precio_venta: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(6)]],
       existencia: ["", [Validators.required,Validators.minLength(1), Validators.maxLength(9)]],
